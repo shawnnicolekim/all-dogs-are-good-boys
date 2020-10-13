@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/shawnnicolekim/all-dogs-are-good-boys/issues"
   },
-  "homepage": "https://github.com/shawnnicolekim/all-dogs-are-good-boys#readme"
+  "homepage": "https://github.com/shawnnicolekim/all-dogs-are-good-boys#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.4.1"
+  },
+  "devDependencies": {
+    "faker": "^5.1.0"
+  }
 }
