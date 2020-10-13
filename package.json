@@ -1,0 +1,20 @@
+{
+  "name": "all-dogs-are-good-boys",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shawnnicolekim/all-dogs-are-good-boys.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shawnnicolekim/all-dogs-are-good-boys/issues"
+  },
+  "homepage": "https://github.com/shawnnicolekim/all-dogs-are-good-boys#readme"
+}
