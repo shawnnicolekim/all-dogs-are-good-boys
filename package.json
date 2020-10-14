@@ -20,7 +20,8 @@
   "homepage": "https://github.com/shawnnicolekim/all-dogs-are-good-boys#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "pg": "^8.4.1"
+    "pg": "^8.4.1",
+    "pg-promise": "^10.7.0"
   },
   "devDependencies": {
     "faker": "^5.1.0"
