@@ -22,7 +22,7 @@ CREATE TABLE posts (
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
-  comment VARCHAR(320) UNIQUE NOT NULL
+  text VARCHAR(320) UNIQUE NOT NULL
 );
 
 CREATE TABLE comments_posts (
