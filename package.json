@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon server/index.js",
-    "connect-db": "psql -f database/db.sql"
+    "create-db": "psql -f database/db.sql",
+    "seed": "nodemon database/seed.js"
   },
   "repository": {
     "type": "git",
