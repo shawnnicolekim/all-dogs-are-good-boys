@@ -1,6 +1,6 @@
 const pgp = require('pg-promise')();
 
-const connection = 'postgresql://postgres:the123pw@localhost:3000/goodboys';
+const connection = 'postgresql://postgres@localhost:5432/goodboys';
 
 const db = pgp(connection);
 

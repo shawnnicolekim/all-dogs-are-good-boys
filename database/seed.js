@@ -4,9 +4,9 @@ const { pgp, db } = require('./connect.js');
 // users: username, profile picture, and votes
 const createUser = async () => {
   let userInfo = {
-    name: faker.internet.userName().slice(0, 19),
+    name: faker.internet.userName().slice(0, 24),
     votes: faker.random.number(250),
-    imageUrl: faker.image.avatar()
+    image: faker.internet.avatar()
   }
   return userInfo;
 };
@@ -14,10 +14,10 @@ const createUser = async () => {
 // posts: image, caption, votes, timestamp, and user_id
 const createPost = async () => {
   let postInfo = {
-    user_id: faker.random.number(100),
-    createdAt: faker.date.past(10),
-    imageUrl: faker.image.imageUrl(640, 480, 'dogs'),
-    caption: faker.lorem.paragraph(3),
+    user_id: faker.random.number({min: 1, max: 100}),
+    timestamp: faker.date.past(10),
+    image: faker.image.imageUrl(640, 480, 'dogs'),
+    caption: faker.lorem.paragraph(2),
     votes: faker.random.number(250)
   }
   return postInfo;
@@ -34,38 +34,38 @@ const createComment = async () => {
 // comments_posts: timestamp, user_id, comment_id, post_id
 // comment needs to be a time AFTER a given post was made
 const createCommentOnPost = async () => {
-  // query a random post
-  // make timestamp any time after the post timestamp
-  // make post_id the id of queried post
-  // create random number for comment
-  // user_id can be random
-
-  let randomPostId = Math.floor(Math.random() * 100);
 
   let commentOnPostInfo = {
-    createdAt: null,
-    user_id: faker.random.number(100),
-    comment_id: faker.random.number(100),
-    post_id: randomPostId
+    timestamp: null,
+    user_id: faker.random.number({min: 1, max: 100}),
+    comment_id: faker.random.number({min: 1, max: 100}),
+    post_id: faker.random.number({min: 1, max: 100})
   }
 
-  let queryString = `SELECT createdAt FROM posts WHERE id=${randomPostId}`;
+  let queryString = `SELECT timestamp FROM posts WHERE id=${commentOnPostInfo['post_id']}`;
 
+  /*
   db.query(queryString)
     .then(res => {
-      commentOnPostInfo.createdAt = res.rows[0].createdAt;
+      commentOnPostInfo.timestamp = res[0].timestamp;
       return commentOnPostInfo;
     })
     .catch(err => {
       console.error(err);
     })
+    */
+  let postTimeStamp = await db.query(queryString);
+
+  commentOnPostInfo.timestamp = faker.date.between(postTimeStamp[0].timestamp, new Date());
+
+  return commentOnPostInfo;
 }
 
 // favorites: user_id, post_id
 const createFavorite = async () => {
   let favoriteInfo = {
-    user_id: faker.random.number(100),
-    post_id: faker.random.number(100)
+    user_id: faker.random.number({min: 1, max: 100}),
+    post_id: faker.random.number({min: 1, max: 100})
   }
 
   return favoriteInfo;
@@ -79,16 +79,20 @@ const createData = async (callback, table) => {
     data.push(await callback());
   }
 
-  let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table});
+  let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table: table});
 
   let query = pgp.helpers.insert(data, columns);
+
+  if (data[0][0] === 'name') {
+    console.log('query', query);
+  }
 
   return query;
 }
 
 const seedAll = async () => {
   var seedFunctions = {
-    user: createUser,
+    users: createUser,
     posts: createPost,
     comments: createComment,
     comments_posts: createCommentOnPost,

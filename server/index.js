@@ -4,6 +4,6 @@ const { db } = require('../database/connect.js');
 
 app.use(express.json());
 
-app.listen(3000, () => {
+app.listen(5432, () => {
   console.log('Listening on port 3000');
 })
