@@ -44,16 +44,6 @@ const createCommentOnPost = async () => {
 
   let queryString = `SELECT timestamp FROM posts WHERE id=${commentOnPostInfo['post_id']}`;
 
-  /*
-  db.query(queryString)
-    .then(res => {
-      commentOnPostInfo.timestamp = res[0].timestamp;
-      return commentOnPostInfo;
-    })
-    .catch(err => {
-      console.error(err);
-    })
-    */
   let postTimeStamp = await db.query(queryString);
 
   commentOnPostInfo.timestamp = faker.date.between(postTimeStamp[0].timestamp, new Date());
@@ -82,10 +72,6 @@ const createData = async (callback, table) => {
   let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table: table});
 
   let query = pgp.helpers.insert(data, columns);
-
-  if (data[0][0] === 'name') {
-    console.log('query', query);
-  }
 
   return query;
 }
