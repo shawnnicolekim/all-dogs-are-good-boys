@@ -77,7 +77,7 @@ const createData = async (callback, table) => {
 }
 
 const seedAll = async () => {
-  var seedFunctions = {
+  let seedFunctions = {
     users: createUser,
     posts: createPost,
     comments: createComment,
@@ -85,8 +85,8 @@ const seedAll = async () => {
     favorites: createFavorite
   }
 
-  for (var table in seedFunctions) {
-    var data = await createData(seedFunctions[table], table)
+  for (let table in seedFunctions) {
+    let data = await createData(seedFunctions[table], table)
     await db.none(data);
   }
 }
