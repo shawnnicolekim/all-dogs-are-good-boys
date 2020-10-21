@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 // POSTS a new post
 // IN PROGRESS
 app.post('/post', (req, res) => {
-  let query = 'INSERT INTO posts(user_id, timestamp, image, caption, votes) VALUES()';
+  let query = `INSERT INTO posts(user_id, timestamp, image, caption) VALUES(${req.body.userid}, ${new Date()}, ${req.body.image}, ${req.body.caption})`;
   db.none(query)
 })
 
