@@ -1,6 +1,30 @@
 const faker = require('faker');
 const { pgp, db } = require('./connect.js');
 
+// positive comments
+const comments = [
+  'Such a good boy!',
+  'Wow the best boy.',
+  'Amazing!',
+  'Perfect!',
+  'The goodest boy.',
+  'I would award you 1st place.',
+  'The bestest boy!',
+  'Goodest boy of all the good boys',
+  'A wonderful pupper.',
+  'So cute!',
+  'A great doggo.',
+  '10\'s across the board!',
+  'Beautiful!',
+  'Who\'s a good boy? This doggo!!',
+  'A+++',
+  'OMG 10/10',
+  'Love!!',
+  'This pupper deserves all the treats.',
+  'A pretty doggo!',
+  'Another good boy!'
+];
+
 // users: username, profile picture, and votes
 const createUser = async () => {
   let userInfo = {
@@ -23,14 +47,6 @@ const createPost = async () => {
   return postInfo;
 }
 
-// comments: comments
-const createComment = async () => {
-  let commentInfo = {
-    text: faker.lorem.sentence()
-  }
-  return commentInfo
-}
-
 // comments_posts: timestamp, user_id, comment_id, post_id
 // comment needs to be a time AFTER a given post was made
 const createCommentOnPost = async () => {
@@ -38,7 +54,7 @@ const createCommentOnPost = async () => {
   let commentOnPostInfo = {
     timestamp: null,
     user_id: faker.random.number({min: 1, max: 100}),
-    comment_id: faker.random.number({min: 1, max: 100}),
+    comment_id: faker.random.number({min: 1, max: 20}),
     post_id: faker.random.number({min: 1, max: 100})
   }
 
@@ -69,6 +85,10 @@ const createData = async (callback, table) => {
     data.push(await callback());
   }
 
+  if (table === 'posts' || table === 'comments_posts') {
+    data = data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+  }
+
   let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table: table});
 
   let query = pgp.helpers.insert(data, columns);
@@ -76,11 +96,23 @@ const createData = async (callback, table) => {
   return query;
 }
 
+const seedComments = async () => {
+  var data = [];
+
+  for (var i = 0; i < comments.length; i++) {
+    data.push({text: comments[i]})
+  }
+
+  let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table: 'comments'});
+  let query = pgp.helpers.insert(data, columns);
+
+  await db.none(query);
+}
+
 const seedAll = async () => {
   let seedFunctions = {
     users: createUser,
     posts: createPost,
-    comments: createComment,
     comments_posts: createCommentOnPost,
     favorites: createFavorite
   }
@@ -91,7 +123,10 @@ const seedAll = async () => {
   }
 }
 
-seedAll()
+seedComments()
+  .then(() => {
+    seedAll();
+  })
   .then(() => {
     console.log('Completed seeding database.');
   })
