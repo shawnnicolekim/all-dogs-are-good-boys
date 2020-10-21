@@ -18,11 +18,15 @@ app.get('/', (req, res) => {
 })
 
 // GET all comments of a specific post
-app.get('comments/:postId', (req, res) => {
-  var postId = req.params.postId;
+app.get('comments/:postid', (req, res) => {
+  console.log('req is :', req);
+
+  var postId = req.query.postId;
+  console.log('postId is: ', postId);
+
   var queryString = `SELECT * FROM comments ORDER BY timestamp DESC WHERE post_id=${postId} LIMIT 10`;
 
-  db.many()
+
 })
 
 app.listen(3000, () => {
