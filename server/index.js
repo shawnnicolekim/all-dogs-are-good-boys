@@ -100,6 +100,23 @@ app.post('/favorite', (req, res) => {
     })
 })
 
+app.delete('/favorite', (req, res) => {
+  let query = `
+    DELETE FROM
+      favorites
+    WHERE
+      user_id=${req.body['user_id']}
+      AND
+      post_id=${req.body['post_id']}
+  `;
+
+  db.none(query)
+    .then(res.end())
+    .catch(err => {
+      console.error('Could not unfavorite this post')
+    })
+})
+
 // GET all comments of a specific post
 // IN PROGRESS
 app.get('/comments/:post_id', (req, res) => {
