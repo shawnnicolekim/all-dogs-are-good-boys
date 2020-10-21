@@ -18,18 +18,19 @@ app.get('/', (req, res) => {
 })
 
 // POSTS a new post
+// expects a user_id, image, and caption within req.body
 // DONE
 app.post('/post', (req, res) => {
   let query = `
     INSERT INTO
       posts (
-        "user_id",
+        user_id,
         timestamp,
         image,
         caption
       )
     VALUES (
-      ${req.body.userid},
+      ${req.body['user_id']},
       '${JSON.stringify(new Date())}',
       '${req.body.image}',
       '${req.body.caption}'
@@ -46,12 +47,42 @@ app.post('/post', (req, res) => {
     })
 })
 
+// POST a comment - gets params (id's of post, user, and comment), then returns timestamp of comment creation
+// DONE
+app.post('/:post_id/:user_id/:comment_id', (req, res) => {
+  var query = `
+    INSERT INTO
+      comments_posts (
+        timestamp,
+        user_id,
+        comment_id,
+        post_id
+      )
+    VALUES (
+      '${JSON.stringify(new Date())}',
+      ${req.params['user_id']},
+      ${req.params['comment_id']},
+      ${req.params['post_id']}
+    )
+    RETURNING
+      timestamp
+    `;
+
+    db.one(query)
+      .then(data => {
+        res.json(data)
+      })
+      .catch(err => {
+        console.error('Could not insert new comment into database: ', err)
+      })
+
+})
+
 // GET all comments of a specific post
 // IN PROGRESS
-app.get('/comments/:postid', (req, res) => {
-  var postid = req.params.postid;
-
-  var query = `SELECT * FROM comments_posts WHERE post_id=${postid} ORDER BY timestamp DESC LIMIT 10`;
+app.get('/comments/:post_id', (req, res) => {
+  var post_id = req.params.post_id;
+  var query = `SELECT * FROM comments_posts WHERE post_id=${post_id} ORDER BY timestamp DESC LIMIT 10`;
 
   db.many(query)
     .then(data => {
