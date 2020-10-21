@@ -100,6 +100,8 @@ app.post('/favorite', (req, res) => {
     })
 })
 
+// DELETE a favorite (req.body will contain user and post id)
+// DONE
 app.delete('/favorite', (req, res) => {
   let query = `
     DELETE FROM
