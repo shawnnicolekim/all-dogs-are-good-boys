@@ -78,6 +78,36 @@ app.post('/comment', (req, res) => {
 
 })
 
+// GET user info - given user_id, return all user info (name, # votes, image, # of posts, # of comments).
+  // Might have to switch to using username instead, depending on frontend.
+// DONE
+app.get('/user/:user_id', (req, res) => {
+  let user = req.params['user_id'];
+
+  let postsQuery = `SELECT id FROM posts WHERE user_id=${user}`;
+  let commentsQuery = `SELECT id FROM comments_posts WHERE user_id=${user}`;
+  let votesQuery = `SELECT * FROM users WHERE id=${user}`;
+
+  let userInfo;
+
+  db.one(votesQuery)
+    .then(data1 => {
+      userInfo = data1;
+      return db.many(postsQuery);
+    })
+    .then(data2 => {
+      userInfo.posts = data2.length;
+      return db.many(commentsQuery);
+    })
+    .then(data3 => {
+      userInfo.comments = data3.length;
+      res.json(userInfo);
+    })
+    .catch(err => {
+      console.error('Could not get user profile info: ', err)
+    })
+})
+
 // POST a favorite (req.body will contain user and post id)
 // DONE
 app.post('/favorite', (req, res) => {
