@@ -17,7 +17,13 @@ app.get('/', (req, res) => {
     })
 })
 
+// GET all comments of a specific post
+app.get('comments/:postId', (req, res) => {
+  var postId = req.params.postId;
+  var queryString = `SELECT * FROM comments ORDER BY timestamp DESC WHERE post_id=${postId} LIMIT 10`;
 
+  db.many()
+})
 
 app.listen(3000, () => {
   console.log('Listening on port 3000');

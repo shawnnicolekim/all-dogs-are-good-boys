@@ -97,16 +97,8 @@ const createData = async (callback, table) => {
 }
 
 const seedComments = async () => {
-  var data = [];
-
-  for (var i = 0; i < comments.length; i++) {
-    data.push({text: comments[i]})
-  }
-
-  let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table: 'comments'});
-  let query = pgp.helpers.insert(data, columns);
-
-  await db.none(query);
+  let query = 'INSERT INTO comments (text) SELECT * FROM UNNEST($1)';
+  await db.none(query, [comments]);
 }
 
 const seedAll = async () => {
