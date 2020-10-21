@@ -13,15 +13,37 @@ app.get('/', (req, res) => {
       res.json(data);
     })
     .catch(err => {
-      console.error('Could not get posts from database');
+      console.error('Could not get posts from database: ', err);
     })
 })
 
 // POSTS a new post
-// IN PROGRESS
+// DONE
 app.post('/post', (req, res) => {
-  let query = `INSERT INTO posts(user_id, timestamp, image, caption) VALUES(${req.body.userid}, ${new Date()}, ${req.body.image}, ${req.body.caption})`;
-  db.none(query)
+  let query = `
+    INSERT INTO
+      posts (
+        "user_id",
+        timestamp,
+        image,
+        caption
+      )
+    VALUES (
+      ${req.body.userid},
+      '${JSON.stringify(new Date())}',
+      '${req.body.image}',
+      '${req.body.caption}'
+    )
+    RETURNING *
+  `;
+
+  db.one(query)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.error('Could not create new post: ', err)
+    })
 })
 
 // GET all comments of a specific post
