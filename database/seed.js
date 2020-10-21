@@ -40,7 +40,7 @@ const createPost = async () => {
   let postInfo = {
     user_id: faker.random.number({min: 1, max: 100}),
     timestamp: faker.date.past(10),
-    image: faker.image.imageUrl(640, 480, 'dogs'),
+    image: 'https://placedog.net/640/480?random',
     caption: faker.lorem.paragraph(2),
     votes: faker.random.number(250)
   }
