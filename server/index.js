@@ -47,10 +47,10 @@ app.post('/post', (req, res) => {
     })
 })
 
-// POST a comment - gets params (id's of post, user, and comment), then returns timestamp of comment creation
+// POST a comment - body contains id's of post, user, and comment. Return timestamp of comment creation
 // DONE
-app.post('/:post_id/:user_id/:comment_id', (req, res) => {
-  var query = `
+app.post('/comment', (req, res) => {
+  let query = `
     INSERT INTO
       comments_posts (
         timestamp,
@@ -60,13 +60,13 @@ app.post('/:post_id/:user_id/:comment_id', (req, res) => {
       )
     VALUES (
       '${JSON.stringify(new Date())}',
-      ${req.params['user_id']},
-      ${req.params['comment_id']},
-      ${req.params['post_id']}
+      ${req.body['user_id']},
+      ${req.body['comment_id']},
+      ${req.body['post_id']}
     )
     RETURNING
       timestamp
-    `;
+  `;
 
     db.one(query)
       .then(data => {
@@ -78,11 +78,33 @@ app.post('/:post_id/:user_id/:comment_id', (req, res) => {
 
 })
 
+// POST a favorite (req.body will contain user and post id)
+// DONE
+app.post('/favorite', (req, res) => {
+  let query = `
+    INSERT INTO
+      favorites (
+        user_id,
+        post_id
+      )
+    VALUES (
+      ${req.body['user_id']},
+      ${req.body['post_id']}
+    )
+  `;
+
+  db.none(query)
+    .then(res.end())
+    .catch(err => {
+      console.error('Could not favorite this post')
+    })
+})
+
 // GET all comments of a specific post
 // IN PROGRESS
 app.get('/comments/:post_id', (req, res) => {
-  var post_id = req.params.post_id;
-  var query = `SELECT * FROM comments_posts WHERE post_id=${post_id} ORDER BY timestamp DESC LIMIT 10`;
+  let post_id = req.params.post_id;
+  let query = `SELECT * FROM comments_posts WHERE post_id=${post_id} ORDER BY timestamp DESC LIMIT 10`;
 
   db.many(query)
     .then(data => {
