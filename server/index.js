@@ -18,7 +18,8 @@ app.get('/', (req, res) => {
 })
 
 // POSTS a new post
-// expects a user_id, image, and caption within req.body
+// Given a user_id, image, and caption
+// Returns object with all post info (id, user_id, timestamp, image, caption, and votes)
 // DONE
 app.post('/post', (req, res) => {
   let query = `
@@ -30,10 +31,10 @@ app.post('/post', (req, res) => {
         caption
       )
     VALUES (
-      ${req.body['user_id']},
+      ${req.params['user_id']},
       '${JSON.stringify(new Date())}',
-      '${req.body.image}',
-      '${req.body.caption}'
+      '${req.params.image}',
+      '${req.params.caption}'
     )
     RETURNING *
   `;
@@ -47,7 +48,8 @@ app.post('/post', (req, res) => {
     })
 })
 
-// POST a comment - body contains id's of post, user, and comment. Return timestamp of comment creation
+// POST a comment
+// Given the id's of post, user, and comment. Return timestamp of comment creation.
 // DONE
 app.post('/comment', (req, res) => {
   let query = `
@@ -60,9 +62,9 @@ app.post('/comment', (req, res) => {
       )
     VALUES (
       '${JSON.stringify(new Date())}',
-      ${req.body['user_id']},
-      ${req.body['comment_id']},
-      ${req.body['post_id']}
+      ${req.params['user_id']},
+      ${req.params['comment_id']},
+      ${req.params['post_id']}
     )
     RETURNING
       timestamp
@@ -124,7 +126,8 @@ app.get('/user/:user_id/posts', (req, res) => {
     })
 })
 
-// POST a favorite (req.body will contain user and post id)
+// POST a favorite
+// Given user and post id, return nothing
 // DONE
 app.post('/favorite', (req, res) => {
   let query = `
@@ -134,8 +137,8 @@ app.post('/favorite', (req, res) => {
         post_id
       )
     VALUES (
-      ${req.body['user_id']},
-      ${req.body['post_id']}
+      ${req.params['user_id']},
+      ${req.params['post_id']}
     )
   `;
 
@@ -146,7 +149,8 @@ app.post('/favorite', (req, res) => {
     })
 })
 
-// DELETE a favorite (req.body will contain user and post id)
+// DELETE a favorite
+// Given user and post id, return nothing.
 // DONE
 app.delete('/favorite', (req, res) => {
   let query = `
@@ -196,7 +200,7 @@ app.patch('/:post_id/downvote', (req, res) => {
 // GET all comments of a specific post
 // IN PROGRESS
 app.get('/comments/:post_id', (req, res) => {
-  let post_id = req.params.post_id;
+  let post_id = req.params['post_id'];
   let query = `SELECT * FROM comments_posts WHERE post_id=${post_id} ORDER BY timestamp DESC LIMIT 10`;
 
   db.many(query)
