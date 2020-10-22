@@ -78,7 +78,8 @@ app.post('/comment', (req, res) => {
 
 })
 
-// GET user info - given user_id, return all user info (name, # votes, image, # of posts, # of comments).
+// GET user info
+// Given user_id, returns object of all user info (name, # votes, image, # of posts, # of comments).
   // Might have to switch to using username instead, depending on frontend.
 // DONE
 app.get('/user/:user_id', (req, res) => {
@@ -105,6 +106,21 @@ app.get('/user/:user_id', (req, res) => {
     })
     .catch(err => {
       console.error('Could not get user profile info: ', err)
+    })
+})
+
+// GET all posts of a specific user
+// Given user_id in params, returns array of objects containing id, user_id, timestamp, image, caption, and votes)
+// DONE
+app.get('/user/:user_id/posts', (req, res) => {
+  let query = `SELECT * FROM posts WHERE user_id=${req.params['user_id']}`;
+
+  db.many(query)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.error('Could not get posts of specific user')
     })
 })
 
@@ -147,6 +163,18 @@ app.delete('/favorite', (req, res) => {
     .catch(err => {
       console.error('Could not unfavorite this post')
     })
+})
+
+// PATCH add vote
+// IN PROGRESS
+app.patch('/vote/add', (req, res) => {
+
+})
+
+// PATCH remove vote
+// IN PROGRESS
+app.patch('/vote/remove', (req, res) => {
+
 })
 
 // GET all comments of a specific post
