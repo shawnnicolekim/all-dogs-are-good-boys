@@ -120,7 +120,7 @@ app.get('/user/:user_id/posts', (req, res) => {
       res.json(data);
     })
     .catch(err => {
-      console.error('Could not get posts of specific user')
+      console.error('Could not get posts of specific user: ', err)
     })
 })
 
@@ -142,7 +142,7 @@ app.post('/favorite', (req, res) => {
   db.none(query)
     .then(res.end())
     .catch(err => {
-      console.error('Could not favorite this post')
+      console.error('Could not favorite this post: ', err)
     })
 })
 
@@ -161,20 +161,36 @@ app.delete('/favorite', (req, res) => {
   db.none(query)
     .then(res.end())
     .catch(err => {
-      console.error('Could not unfavorite this post')
+      console.error('Could not unfavorite this post: ', err)
     })
 })
 
 // PATCH add vote
 // IN PROGRESS
-app.patch('/vote/add', (req, res) => {
+app.patch('/:post_id/upvote', (req, res) => {
+  let query = `UPDATE posts SET votes = votes + 1 WHERE id=${req.params['post_id']} RETURNING votes`;
 
+  db.one(query)
+    .then(data => {
+      res.json(data)
+    })
+    .catch(err => {
+      console.error('Could not upvote the post: ', err)
+    })
 })
 
 // PATCH remove vote
 // IN PROGRESS
-app.patch('/vote/remove', (req, res) => {
+app.patch('/:post_id/downvote', (req, res) => {
+  let query = `UPDATE posts SET votes = votes - 1 WHERE id=${req.params['post_id']} RETURNING votes`;
 
+  db.one(query)
+    .then(data => {
+      res.json(data)
+    })
+    .catch(err => {
+      console.error('Could not downvote the post: ', err)
+    })
 })
 
 // GET all comments of a specific post
@@ -188,7 +204,7 @@ app.get('/comments/:post_id', (req, res) => {
       res.json(data);
     })
     .catch(err => {
-      console.error('Could not get the comments of given post')
+      console.error('Could not get the comments of given post: ', err)
     })
 
 /*
