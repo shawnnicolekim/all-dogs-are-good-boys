@@ -199,9 +199,28 @@ app.patch('/:post_id/downvote', (req, res) => {
 
 // GET all comments of a specific post
 // IN PROGRESS
-app.get('/:post_id/comments', (req, res) => {
+app.get('/comments/:post_id', (req, res) => {
   let post_id = req.params['post_id'];
-  let queryString = `SELECT * FROM comments_posts WHERE post_id=${post_id} ORDER BY timestamp DESC LIMIT 10`;
+  let queryString = `
+    SELECT
+      cp.timestamp, c.text, u.name, u.image
+    FROM
+      comments_posts cp
+    LEFT JOIN
+      users u
+    ON
+      cp.user_id=u.id
+    LEFT JOIN
+      comments c
+    ON
+      cp.comment_id=c.id
+    WHERE
+      cp.post_id=${post_id}
+    ORDER BY
+      cp.timestamp DESC
+    LIMIT
+      10
+  `;
 
   db.many(queryString)
     .then(data => {
@@ -210,30 +229,6 @@ app.get('/:post_id/comments', (req, res) => {
     .catch(err => {
       console.error('Could not get the comments of given post: ', err)
     })
-
-/*
-Using postid === '4', I get these 2 objects. How should I go about getting the correct username and comment strings? Do I need to iterate over the array and go through each user_id and comment_id?
-
-From the user, I need username and profile pic.
-From the comment, I just need text.
-
-[
-    {
-        "id": 19,
-        "timestamp": "2016-11-11T14:54:36.259Z",
-        "user_id": 71,
-        "comment_id": 2,
-        "post_id": 4
-    },
-    {
-        "id": 3,
-        "timestamp": "2012-05-17T19:12:48.942Z",
-        "user_id": 22,
-        "comment_id": 17,
-        "post_id": 4
-    }
-]
-*/
 })
 
 app.listen(3000, () => {
@@ -241,6 +236,7 @@ app.listen(3000, () => {
 })
 
 /*
+Note:
 axios URL is express params
 axios params (get) is express query
 axios data (post/patch/delete) is express body
