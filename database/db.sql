@@ -6,7 +6,9 @@ CREATE DATABASE goodboys;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(25) NOT NULL,
+  username VARCHAR(25) NOT NULL,
+  email text NOT NULL,
+  password text NOT NULL,
   votes INT NOT NULL DEFAULT 0,
   image TEXT NOT NULL
 );

@@ -1,4 +1,5 @@
 const faker = require('faker');
+const bcrypt = require('bcrypt');
 const { pgp, db } = require('./connect.js');
 
 // positive comments
@@ -28,7 +29,9 @@ const comments = [
 // users: username, profile picture, and votes
 const createUser = async () => {
   let userInfo = {
-    name: faker.internet.userName().slice(0, 24),
+    username: faker.internet.userName().slice(0, 24),
+    email: faker.internet.email(),
+    password: await bcrypt.hash(faker.internet.password(), 10),
     votes: faker.random.number(250),
     image: faker.internet.avatar()
   }
@@ -40,7 +43,7 @@ const createPost = async () => {
   let postInfo = {
     user_id: faker.random.number({min: 1, max: 100}),
     timestamp: faker.date.past(10),
-    image: 'https://placedog.net/640/480?random',
+    image: `https://placedog.net/640/480?random=${Math.floor(Math.random() * 100)}`,
     caption: faker.lorem.paragraph(2),
     votes: faker.random.number(250)
   }
@@ -116,9 +119,7 @@ const seedAll = async () => {
 }
 
 seedComments()
-  .then(() => {
-    seedAll();
-  })
+  .then(seedAll)
   .then(() => {
     console.log('Completed seeding database.');
   })
