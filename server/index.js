@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const bcrypt = require('bcrypt');
 const { db } = require('../database/connect.js');
 
 app.use(express.json());
@@ -7,10 +8,32 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../client/dist'));
 
+app.post('/signup', (req, res) => {
+
+})
+
+app.get('/login', (req, res) => {
+
+})
+
 // GET the 10 most recent posts
 // DONE
 app.get('/posts', (req, res) => {
-  let queryString = 'SELECT * FROM posts ORDER BY timestamp DESC LIMIT 10';
+  let queryString = `
+    SELECT
+      p.caption, p.id, p.image, p.timestamp, p.votes, u.name
+    FROM
+      posts p
+    LEFT JOIN
+      users u
+    ON
+      p.user_id=u.id
+    ORDER BY
+      p.timestamp DESC
+    LIMIT
+      10
+  `;
+
   db.many(queryString)
     .then(data => {
       res.json(data);

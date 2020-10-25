@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import PostList from './PostList.jsx';
 
 class App extends React.Component {
   constructor() {
@@ -11,9 +12,8 @@ class App extends React.Component {
 
   componentDidMount() {
     axios.get('/posts')
-      .then(data => {
-        console.log('axios data:', data);
-        this.setState({posts: data})
+      .then(res => {
+        this.setState({posts: res.data})
       })
       .catch(err => {
         console.error('Could not get posts for homepage: ', err)
@@ -23,7 +23,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        There's nothing here yet.
+        <PostList posts={this.state.posts} />
       </div>
     )
   }
