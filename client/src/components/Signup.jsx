@@ -12,6 +12,8 @@ const Signup = () => {
         <input type='text' id='email' name='email'></input>
         <label for='password'></label>
         <input type='text' id='password' name='password'></input>
+        <label for='avatar'></label>
+        <input type='text' id='avatar' name='avatar'></input>
         <input type='button'>Signup</input>
       </form>
       <a href='./Login.jsx'>Go to Login Page</a>

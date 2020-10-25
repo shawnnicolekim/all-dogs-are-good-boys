@@ -8,8 +8,25 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../client/dist'));
 
-app.post('/signup', (req, res) => {
+// need to create something that checks if the user is logged in, if so, it'll open up the Post /posts call. If not, it'll lead to the /login page.
 
+app.post('/signup', async (req, res) => {
+  let hashedPassword = await bcrypt.hash(req.body.password, 10);
+  let queryString = `
+    INSERT INTO
+      users (username, email, password, image)
+    VALUES
+      ${req.body.username}, ${req.body.email}, ${hashedPassword}, ${req.body.avatar},
+  `;
+
+  db.none(queryString)
+    .then(() => {
+      res.redirect('/login')
+    })
+    .catch(err => {
+      console.error('Could not register this user: ', err);
+      res.redirect('/signup');
+    })
 })
 
 app.get('/login', (req, res) => {
@@ -21,7 +38,7 @@ app.get('/login', (req, res) => {
 app.get('/posts', (req, res) => {
   let queryString = `
     SELECT
-      p.caption, p.id, p.image, p.timestamp, p.votes, u.name
+      p.caption, p.id, p.image, p.timestamp, p.votes, u.username
     FROM
       posts p
     LEFT JOIN
