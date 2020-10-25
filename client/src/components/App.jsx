@@ -10,7 +10,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/', )
+    axios.get('/posts')
       .then(data => {
         console.log('axios data:', data);
         this.setState({posts: data})

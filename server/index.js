@@ -3,11 +3,13 @@ const app = express();
 const { db } = require('../database/connect.js');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(__dirname + '/../client/dist'));
 
 // GET the 10 most recent posts
 // DONE
-app.get('/', (req, res) => {
+app.get('/posts', (req, res) => {
   let queryString = 'SELECT * FROM posts ORDER BY timestamp DESC LIMIT 10';
   db.many(queryString)
     .then(data => {
