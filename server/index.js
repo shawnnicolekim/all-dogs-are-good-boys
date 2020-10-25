@@ -3,6 +3,7 @@ const app = express();
 const { db } = require('../database/connect.js');
 
 app.use(express.json());
+app.use(express.static(__dirname + '/../client/dist'));
 
 // GET the 10 most recent posts
 // DONE
