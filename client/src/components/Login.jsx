@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Login = () => {
-  render (
+  return (
     <div id='login'>
       <h1>Login</h1>
       <form action='/login' method='GET'>

@@ -1,13 +1,17 @@
 import React from 'react';
 
-const Post = ({post}) => (
-  <li>
-    <div>{post.name}</div>
-    <div>{post.caption}</div>
-    <div>{post.timestamp}</div>
-    <img src={post.image} />
-    <div>{post.votes}</div>
-  </li>
+const Post = () => (
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    axios.get('/posts')
+      .then(res => {
+        this.setState({posts: res.data})
+      })
+      .catch(err => {
+        console.error('Could not get posts for homepage: ', err)
+      })
+  })
 );
 
 export default Post;

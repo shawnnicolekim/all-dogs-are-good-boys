@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
 const { db } = require('../database/connect.js');
+const passport = require('passport');
+
+const initializePassport = require('./passport-config.js');
+initializePassport(passport);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
