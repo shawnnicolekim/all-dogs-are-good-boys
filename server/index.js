@@ -3,18 +3,49 @@ const app = express();
 const bcrypt = require('bcrypt');
 const { db } = require('../database/connect.js');
 const passport = require('passport');
+const session = require('express-session');
 
-const initializePassport = require('./passport-config.js');
-initializePassport(passport);
+const initializePassport = require('./authenticate.js');
+initializePassport(passport, (username) => {
+  let queryString = `
+  SELECT
+    *
+  FROM
+    users
+  WHERE
+    username=${username}
+`;
+db.one(queryString)
+  .then(data => {
+    console.log('data from initializePassport: ', data);
+    return data
+  })
+  .catch(err => {
+    done('Could not authenticate user. Wrong username or password.', err);
+  })
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'Another secret?',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(__dirname + '/../client/dist'));
 
 // need to create something that checks if the user is logged in, if so, it'll open up the Post /posts call. If not, it'll lead to the /login page.
+app.get('/', (req, res) => {
+  console.log('Need to authenticate here');
+  res.end(200);
+})
 
 app.post('/signup', async (req, res) => {
+  console.log('find info in REQ: ', req);
+
   let hashedPassword = await bcrypt.hash(req.body.password, 10);
   let queryString = `
     INSERT INTO
@@ -25,16 +56,18 @@ app.post('/signup', async (req, res) => {
 
   db.none(queryString)
     .then(() => {
-      res.redirect('/login')
+      res.end(200);
     })
     .catch(err => {
       console.error('Could not register this user: ', err);
-      res.redirect('/signup');
+      res.end(400)
     })
 })
 
-app.get('/login', (req, res) => {
-
+app.post('/login',
+  passport.authenticate('local'),
+  (req, res) => {
+    res.end(200)
 })
 
 // GET the 10 most recent posts
