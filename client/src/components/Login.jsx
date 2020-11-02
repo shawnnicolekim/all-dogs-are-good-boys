@@ -4,7 +4,7 @@ const Login = () => {
   return (
     <div id='login'>
       <h1>Login</h1>
-      <form action='/login' method='GET'>
+      <form action='/login' method='POST'>
         <label for='username'>Username</label>
         <input type='text' id='username' name='username' />
         <br></br>

@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 const { db } = require('../database/connect.js');
 const passport = require('passport');
 const session = require('express-session');
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 const { initializePassport } = require('./authenticate.js');
 initializePassport(passport);
@@ -20,11 +23,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(__dirname + '/../client/dist'));
-
-// need to create something that checks if the user is logged in, if so, it'll open up the Post /posts call. If not, it'll lead to the /login page.
+// need to create something that checks if the user is logged in, if so, it'll open up the Homepage. If not, it'll lead to the /login page.
 app.get('/', checkAuthenticated, (req, res) => {
-  res.end(200);
+  res.redirect('/');
 })
 
 app.post('/signup', async (req, res) => {
@@ -46,9 +47,26 @@ app.post('/signup', async (req, res) => {
     })
 })
 
-app.get('/login', checkAuthenticated, (req, res) => {
-  res.send(200);
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}))
+
+app.get('/logout', (req, res) => {
+  req.logOut();
+  res.clearCookie('connect.sid');
+  res.redirect('/login');
 })
+/*
+app.post('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy((err) => {
+    res.clearCookie('connect.sid');
+    // Don't redirect, just print text
+    res.send('Logged out');
+  });
+});
+*/
 
 // GET the 10 most recent posts
 // DONE
@@ -290,6 +308,13 @@ app.get('/comments/:post_id', (req, res) => {
       console.error('Could not get the comments of given post: ', err)
     })
 })
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'), (err) => {
+    console.error('Could not load page: ', err);
+  })
+})
+
 
 app.listen(3000, () => {
   console.log('Listening on port 3000');

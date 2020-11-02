@@ -5,7 +5,7 @@ const Signup = () => {
     <div id='signup'>
       <h1>Signup</h1>
       <div>All inputs are required.</div>
-      <form onSubmit={handleSubmit}>
+      <form action='/signup' method='POST'>
         <label for='username'>Username</label>
         <input type='text' id='username' name='username'></input>
         <br></br>

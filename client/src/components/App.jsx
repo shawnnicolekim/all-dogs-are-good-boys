@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 
 import Login from './Login.jsx';
+import Signup from './Signup.jsx';
 import Homepage from './Homepage.jsx';
 
 const App = () => {
   return (
-    <Router>
-      <Route exact path ='/login' component={Login} />
-      <Route exact path ='/' component={Homepage} />
-    </Router>
+    <div>
+      <Switch>
+        <Route exact path ='/login' component={Login} />
+        <Route exact path ='/signup' component={Signup} />
+        <Route exact path ='/' component={Homepage} />
+      </Switch>
+    </div>
   )
 }
 

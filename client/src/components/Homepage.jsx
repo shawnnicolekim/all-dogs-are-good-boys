@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
+import Login from './Login.jsx';
+import Navbar from './Navbar.jsx';
 
 const Homepage = () => {
   return (
-    <div>Homepage</div>
+    <div>
+      <Navbar />
+      Homepage
+    </div>
   )
 }
 
