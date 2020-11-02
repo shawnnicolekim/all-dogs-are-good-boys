@@ -1,33 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
-/*
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  Redirect
-} from 'react-router-dom';
-*/
 
 import Login from './Login.jsx';
-import PostList from './PostList.jsx';
+import Homepage from './Homepage.jsx';
 
 const App = () => {
-  const [loggedIn, useLoggedIn] = useState(false);
-
-  useEffect(() => {
-    axios.get('/')
-      .then(res => {
-        console.log('after useEffect res: ', res.status);
-      })
-      .catch(err => {
-        console.error(err);
-      })
-  })
-
   return (
-    <div>Hi</div>
+    <Router>
+      <Route exact path ='/login' component={Login} />
+      <Route exact path ='/' component={Homepage} />
+    </Router>
   )
 }
 

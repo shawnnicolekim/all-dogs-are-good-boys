@@ -5,25 +5,10 @@ const { db } = require('../database/connect.js');
 const passport = require('passport');
 const session = require('express-session');
 
-const initializePassport = require('./authenticate.js');
-initializePassport(passport, (username) => {
-  let queryString = `
-  SELECT
-    *
-  FROM
-    users
-  WHERE
-    username=${username}
-`;
-db.one(queryString)
-  .then(data => {
-    console.log('data from initializePassport: ', data);
-    return data
-  })
-  .catch(err => {
-    done('Could not authenticate user. Wrong username or password.', err);
-  })
-});
+const { initializePassport } = require('./authenticate.js');
+initializePassport(passport);
+
+const { checkAuthenticated } = require('./authenticate.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,14 +23,11 @@ app.use(passport.session());
 app.use(express.static(__dirname + '/../client/dist'));
 
 // need to create something that checks if the user is logged in, if so, it'll open up the Post /posts call. If not, it'll lead to the /login page.
-app.get('/', (req, res) => {
-  console.log('Need to authenticate here');
+app.get('/', checkAuthenticated, (req, res) => {
   res.end(200);
 })
 
 app.post('/signup', async (req, res) => {
-  console.log('find info in REQ: ', req);
-
   let hashedPassword = await bcrypt.hash(req.body.password, 10);
   let queryString = `
     INSERT INTO
@@ -64,10 +46,8 @@ app.post('/signup', async (req, res) => {
     })
 })
 
-app.post('/login',
-  passport.authenticate('local'),
-  (req, res) => {
-    res.end(200)
+app.get('/login', checkAuthenticated, (req, res) => {
+  res.send(200);
 })
 
 // GET the 10 most recent posts

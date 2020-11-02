@@ -1,34 +1,6 @@
 import React, { useState } from 'react';
 
 const Signup = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleInputChange = (event) => {
-    let { value, name } = event.target;
-
-    if (name === 'username') {
-      setUsername(value);
-    } else if (name === 'email') {
-      setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    }
-  }
-
-  const handleSubmit = () => {
-    axios.post('/signup', {
-      username,
-      email,
-      password
-    })
-    .then((data) => {
-      console.log('data from signup post');
-    })
-  }
-
-
   return (
     <div id='signup'>
       <h1>Signup</h1>
