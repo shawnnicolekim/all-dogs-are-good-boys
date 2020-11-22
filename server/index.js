@@ -30,31 +30,36 @@ app.get('/', checkAuthenticated, (req, res) => {
 
 app.post('/signup', async (req, res) => {
   let hashedPassword = await bcrypt.hash(req.body.password, 10);
+
   let queryString = `
     INSERT INTO
-      users (username, email, password, image)
+      users(username, email, password, image)
     VALUES
-      ${req.body.username}, ${req.body.email}, ${hashedPassword}, ${req.body.avatar},
+      ('${req.body.username}', '${req.body.email}', '${hashedPassword}', '${req.body.avatar}')
   `;
 
   db.none(queryString)
     .then(() => {
-      res.end(200);
+      res.status(200).redirect('/login');
     })
     .catch(err => {
       console.error('Could not register this user: ', err);
-      res.end(400)
+      res.status(400).end();
     })
 })
 
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login'
-}))
+app.post('/login',
+  passport.authenticate('local',
+    {
+      successRedirect: '/',
+      failureRedirect: '/login'
+    }
+  )
+)
 
 app.get('/logout', (req, res) => {
-  req.logOut();
-  res.clearCookie('connect.sid');
+  req.logout();
+  // res.clearCookie('connect.sid');
   res.redirect('/login');
 })
 /*
@@ -311,7 +316,9 @@ app.get('/comments/:post_id', (req, res) => {
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'), (err) => {
-    console.error('Could not load page: ', err);
+    if (err) {
+      console.error('Could not load page: ', err);
+    }
   })
 })
 

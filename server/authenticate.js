@@ -9,12 +9,12 @@ const findUserByUsername = (username) => {
     FROM
       users
     WHERE
-      username=${username}
+      username='${username}'
   `;
   db.one(queryString)
     .then(data => {
       console.log('data from findUser: ', data);
-      return data
+      return data;
     })
     .catch(err => {
       done('Could not authenticate user. Wrong username or password.', err);
@@ -43,13 +43,17 @@ db.one(queryString)
 const authUser = (username, password, done) => {
   const user = findUserByUsername(username);
 
+  // checks if there was a user found by that username
   if (!user) {
     return done(null, false);
   }
 
+  // checks if the passwords match
   if (bcrypt.compare(password, user.password)) {
+    // if password is correct, return user from database
     return done(null, user);
   } else {
+    // if password is incorrect, return false
     done(null, false);
   }
 }
@@ -61,13 +65,13 @@ const initializePassport = (passport) => {
   });
   passport.deserializeUser((id, done) => {
     let user = findUserById(id);
-    return done(null, user);
+    return done(err, user);
   })
 }
 
 const checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return next;
+    return next();
   } else {
     res.redirect('/login')
   }

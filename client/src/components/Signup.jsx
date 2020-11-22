@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   return (
@@ -24,7 +25,7 @@ const Signup = () => {
 
         <input type='submit' value='Signup'></input>
       </form>
-      <a href='./Login.jsx'>Go to Login Page</a>
+      <Link to='/login'>Go to the login page!</Link>
     </div>
   )
 }
