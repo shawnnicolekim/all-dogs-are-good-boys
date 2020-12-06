@@ -1,22 +1,25 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import Homepage from './Homepage.jsx';
+import Logout from './Logout.jsx';
 
 const Navbar = () => {
   return (
     <div>
-    <NavLink
+      <NavLink
       exact to='/'
       activeStyle={{
         fontWeight: 'bold',
         color: 'blue'
       }}
-    >
-      Home
-    </NavLink>
-    <NavLink exact to='/logout'>
-      Logout
-    </NavLink>
-      </div>
+      component={Homepage}
+      >
+        Home
+      </NavLink>
+      <Link exact to='/logout' component={Logout}>
+        Logout
+      </Link>
+    </div>
   )
 }
 

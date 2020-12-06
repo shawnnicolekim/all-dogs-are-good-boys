@@ -14,7 +14,7 @@ const Login = () => {
         <input type='text' id='password' name='password' />
         <br></br>
 
-        <input type='button' value='Login'/>
+        <input type='submit' value='Login'/>
       </form>
       <Link to='/signup'>Need to create an account? Click here to signup!</Link>
     </div>

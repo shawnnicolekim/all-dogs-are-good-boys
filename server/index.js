@@ -59,8 +59,15 @@ app.post('/login',
 
 app.get('/logout', (req, res) => {
   req.logout();
-  // res.clearCookie('connect.sid');
-  res.redirect('/login');
+  res.clearCookie('connect.sid');
+
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error in logout: ', err);
+    } else {
+      res.redirect('/login');
+    }
+  })
 })
 /*
 app.post('/logout', (req, res) => {

@@ -11,9 +11,9 @@ const findUserByUsername = (username) => {
     WHERE
       username='${username}'
   `;
-  db.one(queryString)
+  return db.one(queryString)
     .then(data => {
-      console.log('data from findUser: ', data);
+      console.log('data from findUserByUsername: ', data);
       return data;
     })
     .catch(err => {
@@ -21,7 +21,7 @@ const findUserByUsername = (username) => {
     })
 }
 
-const findUserById = (id) => {
+const findUserById = (id, callback) => {
   let queryString = `
   SELECT
     *
@@ -32,30 +32,38 @@ const findUserById = (id) => {
 `;
 db.one(queryString)
   .then(data => {
-    console.log('data from findUser: ', data);
+    console.log('data from findUserById: ', data);
     return data
   })
   .catch(err => {
-    done('Could not authenticate user. Wrong username or password.', err);
+    callback(err, user);
   })
 }
 
-const authUser = (username, password, done) => {
-  const user = findUserByUsername(username);
+const authUser =  (username, password, done) => {
+  // finds user
+  findUserByUsername(username)
+    .then(user => {
+      // checks if there was a user found by that username
+      if (!user) {
+        console.log('No user found with that username!');
+        return done(null, false);
+      }
 
-  // checks if there was a user found by that username
-  if (!user) {
-    return done(null, false);
-  }
-
-  // checks if the passwords match
-  if (bcrypt.compare(password, user.password)) {
-    // if password is correct, return user from database
-    return done(null, user);
-  } else {
-    // if password is incorrect, return false
-    done(null, false);
-  }
+      // checks if the passwords match
+      if (bcrypt.compare(password, user.password)) {
+        console.log('Password matches!');
+        // if password is correct, return user from database
+        return done(null, user);
+      } else {
+        console.log('Password doesn\'t match!');
+        // if password is incorrect, return false
+        done(null, false);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    })
 }
 
 const initializePassport = (passport) => {
@@ -64,8 +72,9 @@ const initializePassport = (passport) => {
     return done(null, user.id);
   });
   passport.deserializeUser((id, done) => {
-    let user = findUserById(id);
-    return done(err, user);
+    let user = findUserById(id, (err, user) => {
+      done(err, user);
+    });
   })
 }
 
