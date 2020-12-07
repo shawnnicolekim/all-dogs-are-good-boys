@@ -23,9 +23,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// need to create something that checks if the user is logged in, if so, it'll open up the Homepage. If not, it'll lead to the /login page.
-app.get('/', checkAuthenticated, (req, res) => {
-  res.redirect('/');
+app.get('/authenticate', (req, res) => {
+  if (!checkAuthenticated(req, res)) {
+    res.status(200).send({authenticated: false});
+  } else {
+    res.status(200).send({authenticated: true});
+  }
 })
 
 app.post('/signup', async (req, res) => {
@@ -49,23 +52,23 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/login',
-  passport.authenticate('local',
-    {
-      successRedirect: '/',
-      failureRedirect: '/login'
-    }
-  )
+  passport.authenticate('local'),
+  (req, res) => {
+    //CHANGE HERE
+    console.log('need to change this redirect')
+  }
 )
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
   req.logout();
   res.clearCookie('connect.sid');
 
-  req.session.destroy((err) => {
+  req.session.destroy(err => {
     if (err) {
       console.error('Error in logout: ', err);
     } else {
-      res.redirect('/login');
+      console.log('Logging out');
+      res.redirect(301, '/login');
     }
   })
 })
@@ -321,7 +324,7 @@ app.get('/comments/:post_id', (req, res) => {
     })
 })
 
-app.get('/*', (req, res) => {
+app.get('/*', checkAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'), (err) => {
     if (err) {
       console.error('Could not load page: ', err);

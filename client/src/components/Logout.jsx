@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
+import axios from 'axios';
 import Login from './Login.jsx';
 
 const Logout = () => {
   useEffect(() => {
-    const logOutTimer = setTimeout(() => {
-
-    });
-  })
+    axios.post('/logout')
+      .then(() => {
+        window.location.href='/login';
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }, []);
   return (
     <div>
-      You have been logged out! You will be redirected to the login page in 10 seconds or <Link to='/login'>click here</Link> to go now.
+      You've been logged out!
     </div>
   )
 }

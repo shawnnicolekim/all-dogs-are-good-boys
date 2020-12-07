@@ -78,12 +78,14 @@ const initializePassport = (passport) => {
   })
 }
 
-const checkAuthenticated = (req, res, next) => {
+const checkAuthenticated = (req, res) => {
   if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect('/login')
+    console.log('Redirecting to correct page.');
+    return true;
   }
+  console.log('Redirecting to login page.');
+  // res.redirect(301, '/login');
+  return false;
 }
 
 module.exports = {
