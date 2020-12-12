@@ -52,11 +52,23 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/login',
-  passport.authenticate('local'),
+  passport.authenticate('local',
+  {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  })
+  /*
   (req, res) => {
-    //CHANGE HERE
-    console.log('need to change this redirect')
+    //req.body = {username:'username', password:'password'}
+    // req.user contains all info, including bcrypted password
+    console.log('what is req.body: ', req.body);
+    console.log('what is req.user: ', req.user);
+    if (req.user) {
+
+    }
+
   }
+    */
 )
 
 app.post('/logout', (req, res) => {
