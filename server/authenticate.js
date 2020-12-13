@@ -13,7 +13,6 @@ const findUserByUsername = (username) => {
   `;
   return db.one(queryString)
     .then(data => {
-      console.log('data from findUserByUsername: ', data);
       return data;
     })
     .catch(err => {
@@ -32,7 +31,6 @@ const findUserById = (id, callback) => {
 `;
 db.one(queryString)
   .then(data => {
-    console.log('data from findUserById: ', data);
     return data
   })
   .catch(err => {
@@ -59,6 +57,7 @@ const authUser = async (username, password, done) => {
       } else {
         console.log('Password doesn\'t match!');
         // if password is incorrect, return false
+
         return done(null, false);
       }
 
@@ -82,7 +81,6 @@ const checkAuthenticated = (req, res) => {
     return true;
   }
   console.log('Redirecting to login page.');
-  // res.redirect(301, '/login');
   return false;
 }
 

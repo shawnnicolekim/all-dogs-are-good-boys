@@ -25,7 +25,7 @@ app.use(passport.session());
 
 app.get('/authenticate', (req, res) => {
   if (!checkAuthenticated(req, res)) {
-    res.status(200).send({authenticated: false});
+    res.status(302).send({authenticated: false});
   } else {
     res.status(200).send({authenticated: true});
   }
@@ -52,18 +52,19 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/login',
-  passport.authenticate('local'),
+  passport.authenticate('local', {
+    failureRedirect: '/login'
+  }),
   (req, res) => {
     // req.user contains all info, including bcrypted password
     console.log('what is req.user: ', req.user);
     if (req.user) {
       res.status(200).send({loggedIn: true});
-    } else {
-      res.status(205).send({loggedIn: false});
     }
   }
 )
 
+/*
 app.post('/logout', (req, res) => {
   req.logout();
   res.clearCookie('connect.sid');
@@ -77,7 +78,7 @@ app.post('/logout', (req, res) => {
     }
   })
 })
-/*
+
 app.post('/logout', (req, res) => {
   req.logout();
   req.session.destroy((err) => {

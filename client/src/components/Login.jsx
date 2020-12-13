@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ authenticated, setAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,16 +18,18 @@ const Login = () => {
 
   const onLoginSubmit = (event) => {
     event.preventDefault();
+
     axios.post('/login', {
       username,
       password
     })
       .then(res => {
         console.log('res after axios: ', res);
+        setAuthenticated(true);
         window.location.href='/';
       })
       .catch(() => {
-        window.location.reload();
+        setAuthenticated(false);
       })
   }
 

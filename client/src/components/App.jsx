@@ -16,19 +16,17 @@ const App = () => {
         setAuthenticated(res.data.authenticated);
       })
       .catch(err => {
-        console.error(err);
+        setAuthenticated(false);
       })
   }, [])
 
   return (
       <div>
-      <Switch>
-        <Route exact path ='/login' component={Login} />
-        <Route exact path ='/signup' component={Signup} />
-        <Route path ='/' >
-          {authenticated ? <Homepage /> : <Redirect to ='/login' />}
-        </Route>
-      </Switch>
+        {authenticated ? (
+          <Homepage />
+        ) : (
+          <Login authenticated={authenticated} setAuthenticated={setAuthenticated}/>
+        )}
       </div>
   )
 }
