@@ -6,26 +6,28 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value)
+  const handleUsernameChange = (event) => {
+    event.preventDefault();
+    setUsername(event.target.value)
   }
 
-  const handlePasswordChange = (e) => {
-    console.log('password: ', e.target);
-    setPassword(e.target.value)
+  const handlePasswordChange = (event) => {
+    event.preventDefault();
+    setPassword(event.target.value)
   }
 
   const onLoginSubmit = (event) => {
-   //  event.preventDefault();
+    event.preventDefault();
     axios.post('/login', {
       username,
       password
     })
       .then(res => {
-        console.log('res after axios: ', res)
+        console.log('res after axios: ', res);
+        window.location.href='/';
       })
-      .catch(err => {
-        console.error(err);
+      .catch(() => {
+        window.location.reload();
       })
   }
 

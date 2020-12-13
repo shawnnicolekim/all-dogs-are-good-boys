@@ -40,30 +40,28 @@ db.one(queryString)
   })
 }
 
-const authUser =  (username, password, done) => {
+const authUser = async (username, password, done) => {
   // finds user
-  findUserByUsername(username)
-    .then(user => {
+  let user = await findUserByUsername(username);
+
       // checks if there was a user found by that username
       if (!user) {
         console.log('No user found with that username!');
         return done(null, false);
       }
 
-      // checks if the passwords match
-      if (bcrypt.compare(password, user.password)) {
+    let pwMatch = await bcrypt.compare(password, user.password);
+
+      if (pwMatch) {
         console.log('Password matches!');
         // if password is correct, return user from database
         return done(null, user);
       } else {
         console.log('Password doesn\'t match!');
         // if password is incorrect, return false
-        done(null, false);
+        return done(null, false);
       }
-    })
-    .catch(err => {
-      console.error(err);
-    })
+
 }
 
 const initializePassport = (passport) => {
