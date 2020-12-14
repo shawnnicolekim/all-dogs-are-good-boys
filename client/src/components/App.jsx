@@ -4,6 +4,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+import { useAuth, useHistory } from '../auth/Auth.jsx';
 
 import PrivateRoute from '../auth/PrivateRoute.jsx';
 import Homepage from './Homepage.jsx';
@@ -12,6 +13,8 @@ import Signup from './Signup.jsx';
 import Dashboard from './Dashboard.jsx';
 
 const App = () => {
+  const auth = useAuth();
+
   return (
     <div>
       <h1><a href='/dashboard'>All Dogs Are Good Boys</a></h1>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../auth/Auth.jsx'
 import axios from 'axios';
 
 const Signup = (props) => {
+  const auth = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,22 +26,7 @@ const Signup = (props) => {
 
   const onSignupSubmit = (event) => {
     event.preventDefault();
-
-    axios.post('/signup', {
-      username,
-      email,
-      password
-    })
-      .then(res => {
-        if (res.data.registered) {
-          props.history.push('/login')
-        }
-      })
-      .catch(() => {
-        if (!res.data.registered) {
-          // if signup fails, need to reset form and let user know it failed
-        }
-      })
+    auth.signup(email, username, password);
   }
 
   return (

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import auth from '../auth/Auth.jsx'
+import { useAuth } from '../auth/Auth.jsx'
 
 const Login = (props) => {
+  const auth = useAuth();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,24 +21,11 @@ const Login = (props) => {
 
   const onLoginSubmit = (event) => {
     event.preventDefault();
-
-    axios.post('/login', {
-      username,
-      password
-    })
-      .then(res => {
-        if (res.data.loggedIn) {
-          return auth.login(() => {
-            props.history.push('/dashboard')
-          })
-          console.log(auth.isAuthenticated());
-        }
-      })
-      .catch(res => {
-        if (!res.data.loggedIn) {
-          // if login fails, need to reset form and let user know it failed
-        }
-      })
+    auth.login(username, password, () => {
+      console.log('history: ', props.location);
+      props.history.replace('/dashboard');
+      console.log('history after: ', props.location);
+    });
   }
 
   return (

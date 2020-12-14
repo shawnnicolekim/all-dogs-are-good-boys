@@ -1,5 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
+const authContext = createContext();
+const useAuth = () => {
+  return useContext(authContext);
+}
+
+// Provider hook
+const useAuthProvider = () => {
+  const [user, setUser] = useState(null);
+
+  const signup = (email, username, password) => {
+    axios.post('/signup', {
+      email,
+      username,
+      password
+    })
+      .then(res => {
+        if (res.data.registered) {
+          return <Redirect to='/login' />
+        }
+      })
+      .catch(err => {
+        // is this the right message?
+        console.error('Client: signup failed. ', err);
+      })
+  }
+
+  const login = (username, password, done) => {
+    axios.post('/login', {
+      username,
+      password
+    })
+      .then(res => {
+        if (res.data.user) {
+          setUser(user);
+        }
+      })
+      .then(() => {
+        done();
+      })
+      .catch(err => {
+        // is this the right message?
+        console.error('Client: login failed. ', err);
+      })
+  }
+
+  const logout = () => {
+    axios.post('/logout')
+      .then(res => {
+        setUser(false);
+      })
+      .catch(err => {
+        console.error('Client: logout failed. ', err);
+      })
+  }
+
+  return {
+    user,
+    signup,
+    login,
+    logout
+  }
+}
+
+// Provider component
+const AuthProvider = ({ children }) => {
+  const auth = useAuthProvider();
+  return (
+    <authContext.Provider value={auth}>
+      {children}
+    </authContext.Provider>
+  )
+}
+
+export {
+  AuthProvider,
+  useAuth
+}
+
+/*
 class Auth {
   constructor() {
     this.authenticated = false;
@@ -22,4 +103,4 @@ class Auth {
 
 export default new Auth();
 // may need to create a new instance everytime
-// export default new Auth();
+*/

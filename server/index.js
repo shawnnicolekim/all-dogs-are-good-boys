@@ -27,7 +27,7 @@ app.post('/signup', async (req, res) => {
     INSERT INTO
       users(username, email, password, image)
     VALUES
-      ('${req.body.username}', '${req.body.email}', '${hashedPassword}', '${req.body.avatar}')
+      ('${req.body.username}', '${req.body.email}', '${hashedPassword}')
   `;
 
   db.none(queryString)
@@ -49,9 +49,9 @@ app.post('/login', (req, res) => {
       }
 
       if (user) {
-        res.status(200).send({loggedIn: true});
+        res.status(200).send({ user });
       } else {
-        res.status(400).send({loggedIn: false});
+        res.status(400).send(false);
       }
     })
   }
