@@ -2,7 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { db } = require('../database/connect.js');
 
-const findUserByUsername = (username) => {
+const findUserByUsername = (username, done) => {
     let queryString = `
     SELECT
       *
@@ -16,7 +16,7 @@ const findUserByUsername = (username) => {
       return data;
     })
     .catch(err => {
-      done('Could not authenticate user. Wrong username or password.', err);
+      done(err, false);
     })
 }
 
@@ -40,7 +40,7 @@ db.one(queryString)
 
 const authUser = async (username, password, done) => {
   // finds user
-  let user = await findUserByUsername(username);
+  let user = await findUserByUsername(username, done);
 
       // checks if there was a user found by that username
       if (!user) {
@@ -57,7 +57,6 @@ const authUser = async (username, password, done) => {
       } else {
         console.log('Password doesn\'t match!');
         // if password is incorrect, return false
-
         return done(null, false);
       }
 
@@ -86,5 +85,6 @@ const checkAuthenticated = (req, res) => {
 
 module.exports = {
   initializePassport,
-  checkAuthenticated
+  checkAuthenticated,
+  authUser
 }

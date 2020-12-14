@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import auth from '../auth/Auth.jsx'
 
-const Login = ({ authenticated, setAuthenticated }) => {
+const Login = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,15 +25,19 @@ const Login = ({ authenticated, setAuthenticated }) => {
       password
     })
       .then(res => {
-        console.log('res after axios: ', res);
-        setAuthenticated(true);
-        window.location.href='/';
+        if (res.data.loggedIn) {
+          return auth.login(() => {
+            props.history.push('/dashboard')
+          })
+          console.log(auth.isAuthenticated());
+        }
       })
-      .catch(() => {
-        setAuthenticated(false);
+      .catch(res => {
+        if (!res.data.loggedIn) {
+          // if login fails, need to reset form and let user know it failed
+        }
       })
   }
-
 
   return (
     <div id='login'>

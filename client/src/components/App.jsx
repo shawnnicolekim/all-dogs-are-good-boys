@@ -1,33 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import axios from 'axios';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
 
+import PrivateRoute from '../auth/PrivateRoute.jsx';
+import Homepage from './Homepage.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
-import Homepage from './Homepage.jsx';
+import Dashboard from './Dashboard.jsx';
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-
-  useEffect(() => {
-    axios.get('/authenticate')
-      .then(res => {
-        console.log('data: ', res);
-        setAuthenticated(res.data.authenticated);
-      })
-      .catch(err => {
-        setAuthenticated(false);
-      })
-  }, [])
-
   return (
-      <div>
-        {authenticated ? (
-          <Homepage />
-        ) : (
-          <Login authenticated={authenticated} setAuthenticated={setAuthenticated}/>
-        )}
-      </div>
+    <div>
+      <h1><a href='/dashboard'>All Dogs Are Good Boys</a></h1>
+      <Switch>
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/signup' component={Signup} />
+        <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        <Route exact path='/' component={Homepage} />
+        <Route path='*' component={() => '404 NOT FOUND'} />
+      </Switch>
+    </div>
   )
 }
 

@@ -2,27 +2,15 @@ const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
 const { db } = require('../database/connect.js');
-const passport = require('passport');
-const session = require('express-session');
 const path = require('path');
 
+const { authUser } = require('./authenticate.js');
+
 app.use(express.static(path.join(__dirname, '/../client/dist')));
-
-const { initializePassport } = require('./authenticate.js');
-initializePassport(passport);
-
-const { checkAuthenticated } = require('./authenticate.js');
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: 'Another secret?',
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
+/*
 app.get('/authenticate', (req, res) => {
   if (!checkAuthenticated(req, res)) {
     res.status(302).send({authenticated: false});
@@ -30,6 +18,7 @@ app.get('/authenticate', (req, res) => {
     res.status(200).send({authenticated: true});
   }
 })
+*/
 
 app.post('/signup', async (req, res) => {
   let hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -43,24 +32,28 @@ app.post('/signup', async (req, res) => {
 
   db.none(queryString)
     .then(() => {
-      res.status(200).redirect('/login');
+      res.status(200).send({registered: true});
     })
     .catch(err => {
       console.error('Could not register this user: ', err);
-      res.status(400).end();
+      res.status(400).send({registered: false});
     })
 })
 
-app.post('/login',
-  passport.authenticate('local', {
-    failureRedirect: '/login'
-  }),
-  (req, res) => {
+app.post('/login', (req, res) => {
     // req.user contains all info, including bcrypted password
-    console.log('what is req.user: ', req.user);
-    if (req.user) {
-      res.status(200).send({loggedIn: true});
-    }
+
+    authUser(req.body.username, req.body.password, (err, user) => {
+      if (err) {
+        console.error(err);
+      }
+
+      if (user) {
+        res.status(200).send({loggedIn: true});
+      } else {
+        res.status(400).send({loggedIn: false});
+      }
+    })
   }
 )
 
@@ -330,7 +323,7 @@ app.get('/comments/:post_id', (req, res) => {
     })
 })
 
-app.get('/*', checkAuthenticated, (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'), (err) => {
     if (err) {
       console.error('Could not load page: ', err);
