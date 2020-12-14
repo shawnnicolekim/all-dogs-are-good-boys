@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../auth/Auth.jsx'
 
-const Login = (props) => {
+const Login = () => {
   const auth = useAuth();
+  const history = useHistory();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,10 +22,14 @@ const Login = (props) => {
 
   const onLoginSubmit = (event) => {
     event.preventDefault();
-    auth.login(username, password, () => {
-      console.log('history: ', props.location);
-      props.history.replace('/dashboard');
-      console.log('history after: ', props.location);
+    auth.login(username, password, (err, loggedIn) => {
+      if (err) {
+        console.error('Could not login. ', err);
+      }
+
+      if (loggedIn) {
+        history.replace('/dashboard');
+      }
     });
   }
 

@@ -35,15 +35,16 @@ const useAuthProvider = () => {
     })
       .then(res => {
         if (res.data.user) {
-          setUser(user);
+          setUser(res.data.user);
+          return true;
         }
       })
-      .then(() => {
-        done();
+      .then(loggedIn => {
+        done(null, loggedIn);
       })
       .catch(err => {
         // is this the right message?
-        console.error('Client: login failed. ', err);
+        done(err, false);
       })
   }
 

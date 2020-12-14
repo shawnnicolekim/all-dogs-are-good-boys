@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Switch
+  Switch,
+  useHistory
 } from 'react-router-dom';
-import { useAuth, useHistory } from '../auth/Auth.jsx';
+import { useAuth } from '../auth/Auth.jsx';
 
 import PrivateRoute from '../auth/PrivateRoute.jsx';
 import Homepage from './Homepage.jsx';
@@ -15,6 +16,7 @@ import Dashboard from './Dashboard.jsx';
 const App = () => {
   const auth = useAuth();
 
+  console.log('auth at app: ', auth);
   return (
     <div>
       <h1><a href='/dashboard'>All Dogs Are Good Boys</a></h1>
