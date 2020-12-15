@@ -152,7 +152,9 @@ app.post('/comment', (req, res) => {
   // Might have to switch to using username instead, depending on frontend.
 // DONE
 app.get('/user/:username', (req, res) => {
-  let user = req.query['user_id'];
+  console.log('req in user profile: ', req);
+
+  let user = req.params['username'];
 
   let postsQuery = `SELECT id FROM posts WHERE user_id=${user}`;
   let commentsQuery = `SELECT id FROM comments_posts WHERE user_id=${user}`;

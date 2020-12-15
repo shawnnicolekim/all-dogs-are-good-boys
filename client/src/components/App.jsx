@@ -14,6 +14,7 @@ import Homepage from './Homepage.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 import Dashboard from './Dashboard.jsx';
+import Profile from './Profile.jsx';
 
 const App = () => {
   const auth = useAuth();
@@ -34,6 +35,7 @@ const App = () => {
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Signup} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        <PrivateRoute path={'/user'} component={Profile} />
         <RestrictedRoute exact path='/' component={Homepage} />
         <Route path='*' component={() => '404 NOT FOUND'} />
       </Switch>
