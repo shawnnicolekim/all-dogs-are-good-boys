@@ -1,12 +1,12 @@
 import React from 'react';
-import auth from '../auth/Auth.jsx';
+import { useAuth } from '../auth/Auth.jsx';
 import { Link } from 'react-router-dom';
 
 const Dashboard = (props) => {
+  const auth = useAuth();
+
   const userLogout = () => {
-    auth.logout(() => {
-      props.history.push('/');
-    })
+    auth.logout(() => history.push('/'));
   }
 
   return (
@@ -14,7 +14,7 @@ const Dashboard = (props) => {
         Dashboard
         <ul>
           <li>
-            <Link to='/' onClick={userLogout}>Logout</Link>
+            <Link onClick={userLogout}>Logout</Link>
           </li>
         </ul>
       </div>

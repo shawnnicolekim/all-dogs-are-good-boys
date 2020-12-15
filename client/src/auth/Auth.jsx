@@ -37,25 +37,20 @@ const useAuthProvider = () => {
         if (res.data.user) {
           setUser(res.data.user);
           return true;
+        } else {
+          return false;
         }
       })
       .then(loggedIn => {
         done(null, loggedIn);
       })
       .catch(err => {
-        // is this the right message?
         done(err, false);
       })
   }
 
   const logout = () => {
-    axios.post('/logout')
-      .then(res => {
-        setUser(false);
-      })
-      .catch(err => {
-        console.error('Client: logout failed. ', err);
-      })
+    setUser(null);
   }
 
   return {

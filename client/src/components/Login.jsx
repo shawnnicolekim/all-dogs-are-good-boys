@@ -10,6 +10,16 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [loginInfo, setLoginInfo] = useState(false);
+
+  const incorrectLoginInfo = () => {
+    if (loginInfo) {
+      return (
+        <p>You input the wrong username or password. Please try again.</p>
+      )
+    }
+  }
+
   const handleUsernameChange = (event) => {
     event.preventDefault();
     setUsername(event.target.value)
@@ -24,7 +34,8 @@ const Login = () => {
     event.preventDefault();
     auth.login(username, password, (err, loggedIn) => {
       if (err) {
-        console.error('Could not login. ', err);
+        setPassword('');
+        setLoginInfo(true);
       }
 
       if (loggedIn) {
@@ -36,6 +47,7 @@ const Login = () => {
   return (
     <div id='login'>
       <h1>Login</h1>
+      {incorrectLoginInfo()}
       <form onSubmit={onLoginSubmit}>
         <label for='username'>Username</label>
         <input type='text' id='username' name='username' onChange={handleUsernameChange}/>

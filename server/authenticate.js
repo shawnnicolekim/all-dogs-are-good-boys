@@ -45,7 +45,7 @@ const authUser = async (username, password, done) => {
       // checks if there was a user found by that username
       if (!user) {
         console.log('No user found with that username!');
-        return done(null, false);
+        return done(true, false);
       }
 
     let pwMatch = await bcrypt.compare(password, user.password);
@@ -57,7 +57,7 @@ const authUser = async (username, password, done) => {
       } else {
         console.log('Password doesn\'t match!');
         // if password is incorrect, return false
-        return done(null, false);
+        return done(true, false);
       }
 
 }

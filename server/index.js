@@ -45,42 +45,17 @@ app.post('/login', (req, res) => {
 
     authUser(req.body.username, req.body.password, (err, user) => {
       if (err) {
-        console.error(err);
+        res.status(401).send(false);
       }
 
       if (user) {
         res.status(200).send({ user });
-      } else {
-        res.status(400).send(false);
       }
     })
   }
 )
 
-/*
-app.post('/logout', (req, res) => {
-  req.logout();
-  res.clearCookie('connect.sid');
-
-  req.session.destroy(err => {
-    if (err) {
-      console.error('Error in logout: ', err);
-    } else {
-      console.log('Logging out');
-      res.redirect(301, '/login');
-    }
-  })
-})
-
-app.post('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy((err) => {
-    res.clearCookie('connect.sid');
-    // Don't redirect, just print text
-    res.send('Logged out');
-  });
-});
-*/
+// Logout is handled on client side
 
 // GET the 10 most recent posts
 // DONE
