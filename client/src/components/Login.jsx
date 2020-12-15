@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../auth/Auth.jsx'
 

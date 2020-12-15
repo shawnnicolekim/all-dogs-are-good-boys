@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../auth/Auth.jsx'
 import axios from 'axios';
 
 const Signup = (props) => {
   const auth = useAuth();
+  const history = useHistory();
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [signupInfo, setSignupInfo] = useState(false);
+
+  const incorrectSignupInfo = () => {
+    if (signupInfo) {
+      return (
+        <p>There is already a user with that username. Please select a different username.</p>
+      )
+    }
+  }
 
   const handleUsernameChange = (event) => {
     event.preventDefault();
@@ -26,12 +38,23 @@ const Signup = (props) => {
 
   const onSignupSubmit = (event) => {
     event.preventDefault();
-    auth.signup(email, username, password);
+    auth.signup(email, username, password, (err, signedUp) => {
+      if (err) {
+        setUsername('');
+        setPassword('');
+        setSignupInfo(true);
+      }
+
+      if (signedUp) {
+        history.replace('/login');
+      }
+    });
   }
 
   return (
     <div id='signup'>
       <h1>Signup</h1>
+      {incorrectSignupInfo()}
       <div>All inputs are required.</div>
       <form onSubmit={onSignupSubmit}>
         <label for='username'>Username</label>

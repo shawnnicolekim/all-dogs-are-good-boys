@@ -11,7 +11,7 @@ const useAuth = () => {
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
 
-  const signup = (email, username, password) => {
+  const signup = (email, username, password, done) => {
     axios.post('/signup', {
       email,
       username,
@@ -19,12 +19,17 @@ const useAuthProvider = () => {
     })
       .then(res => {
         if (res.data.registered) {
-          return <Redirect to='/login' />
+          return true;
+        // do I really need this else statement? If the user signup info is incorrect (duplicate username), it won't even get to this .then block.
+        } else {
+          return false;
         }
       })
+      .then(signedUp => {
+        done(null, signedUp);
+      })
       .catch(err => {
-        // is this the right message?
-        console.error('Client: signup failed. ', err);
+        done(err, false);
       })
   }
 
@@ -37,6 +42,7 @@ const useAuthProvider = () => {
         if (res.data.user) {
           setUser(res.data.user);
           return true;
+        // do I really need this else statement? If the user login info is incorrect, it won't even get to this .then block.
         } else {
           return false;
         }

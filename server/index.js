@@ -25,7 +25,7 @@ app.post('/signup', async (req, res) => {
 
   let queryString = `
     INSERT INTO
-      users(username, email, password, image)
+      users(username, email, password)
     VALUES
       ('${req.body.username}', '${req.body.email}', '${hashedPassword}')
   `;
