@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useAuth } from '../auth/Auth.jsx'
-import axios from 'axios';
+import { useAuth } from '../../auth/Auth.jsx';
 
-const Signup = (props) => {
+const Signup = () => {
   const auth = useAuth();
   const history = useHistory();
 
@@ -17,24 +16,24 @@ const Signup = (props) => {
     if (signupInfo) {
       return (
         <p>There is already a user with that username. Please select a different username.</p>
-      )
+      );
     }
-  }
+  };
 
   const handleUsernameChange = (event) => {
     event.preventDefault();
-    setUsername(event.target.value)
-  }
+    setUsername(event.target.value);
+  };
 
   const handleEmailChange = (event) => {
     event.preventDefault();
     setEmail(event.target.value);
-  }
+  };
 
   const handlePasswordChange = (event) => {
     event.preventDefault();
-    setPassword(event.target.value)
-  }
+    setPassword(event.target.value);
+  };
 
   const onSignupSubmit = (event) => {
     event.preventDefault();
@@ -49,7 +48,7 @@ const Signup = (props) => {
         history.replace('/login');
       }
     });
-  }
+  };
 
   return (
     <div id='signup'>
@@ -73,7 +72,7 @@ const Signup = (props) => {
       </form>
       <Link to='/login'>Already have an account? Go to the login page!</Link>
     </div>
-  )
-}
+  );
+};
 
 export default Signup;

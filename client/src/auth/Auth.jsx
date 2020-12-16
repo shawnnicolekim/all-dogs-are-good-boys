@@ -1,11 +1,8 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import React, { useState, createContext, useContext } from 'react';
 import axios from 'axios';
 
 const authContext = createContext();
-const useAuth = () => {
-  return useContext(authContext);
-}
+const useAuth = () => useContext(authContext);
 
 // Provider hook
 const useAuthProvider = () => {
@@ -15,57 +12,55 @@ const useAuthProvider = () => {
     axios.post('/signup', {
       email,
       username,
-      password
+      password,
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.registered) {
           return true;
-        // do I really need this else statement? If the user signup info is incorrect (duplicate username), it won't even get to this .then block.
-        } else {
-          return false;
+        // need this else statement? If signup info is incorrect, it won't get to this .then block.
         }
+        return false;
       })
-      .then(signedUp => {
+      .then((signedUp) => {
         done(null, signedUp);
       })
-      .catch(err => {
+      .catch((err) => {
         done(err, false);
-      })
-  }
+      });
+  };
 
   const login = (username, password, done) => {
     axios.post('/login', {
       username,
-      password
+      password,
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.user) {
           setUser(res.data.user);
           return true;
-        // do I really need this else statement? If the user login info is incorrect, it won't even get to this .then block.
-        } else {
-          return false;
+        // need this else statement? If login info is incorrect, it won't get to this .then block.
         }
+        return false;
       })
-      .then(loggedIn => {
+      .then((loggedIn) => {
         done(null, loggedIn);
       })
-      .catch(err => {
+      .catch((err) => {
         done(err, false);
-      })
-  }
+      });
+  };
 
   const logout = () => {
     setUser(null);
-  }
+  };
 
   return {
     user,
     signup,
     login,
-    logout
-  }
-}
+    logout,
+  };
+};
 
 // Provider component
 const AuthProvider = ({ children }) => {
@@ -74,13 +69,13 @@ const AuthProvider = ({ children }) => {
     <authContext.Provider value={auth}>
       {children}
     </authContext.Provider>
-  )
-}
+  );
+};
 
 export {
   AuthProvider,
-  useAuth
-}
+  useAuth,
+};
 
 /*
 class Auth {

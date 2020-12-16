@@ -1,8 +1,7 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth } from '../auth/Auth.jsx';
-import Profile from './Profile.jsx';
+import { useAuth } from '../../auth/Auth.jsx';
 
 const StyledNavbar = styled.div`
   display: grid;
@@ -10,30 +9,30 @@ const StyledNavbar = styled.div`
     "dashboardLink profileLink logout";
   grid-template-columns: auto, 30px, 30px;
   border: 2px solid black
-`
+`;
 
 const DashboardLink = styled(Link)`
   grid-area: dashboardLink;
   font-size: 20px;
-`
+`;
 
 const ProfileLink = styled(Link)`
   grid-area: profileLink;
   border-radius: 4px;
   border: 2px solid black
-`
+`;
 
 const LogoutLink = styled(ProfileLink)`
   grid-area: logout;
   font-weight: bold
-`
+`;
 
 const Navbar = () => {
   const auth = useAuth();
 
   const userLogout = () => {
     auth.logout(() => history.push('/'));
-  }
+  };
 
   return (
     <StyledNavbar>
@@ -41,7 +40,7 @@ const Navbar = () => {
       <ProfileLink to={'/user'}>Profile</ProfileLink>
       <LogoutLink onClick={userLogout}>Logout</LogoutLink>
     </StyledNavbar>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
