@@ -36,8 +36,8 @@ const Navbar = () => {
 
   return (
     <StyledNavbar>
-      <DashboardLink to='/dashboard'>All Dogs Are Good Boys</DashboardLink>
-      <ProfileLink to={'/user'}>Profile</ProfileLink>
+      <DashboardLink to="/dashboard">All Dogs Are Good Boys</DashboardLink>
+      <ProfileLink to="/user">Profile</ProfileLink>
       <LogoutLink onClick={userLogout}>Logout</LogoutLink>
     </StyledNavbar>
   );
