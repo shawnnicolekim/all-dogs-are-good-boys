@@ -10,11 +10,11 @@ import { useAuth } from '../auth/Auth.jsx';
 import PrivateRoute from '../auth/PrivateRoute.jsx';
 import RestrictedRoute from '../auth/RestrictedRoute.jsx';
 import Navbar from './Navbar.jsx';
-import Homepage from './Homepage.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 import Dashboard from './Dashboard.jsx';
 import Profile from './Profile.jsx';
+import Homepage from './Homepage.jsx';
 
 const App = () => {
   const auth = useAuth();

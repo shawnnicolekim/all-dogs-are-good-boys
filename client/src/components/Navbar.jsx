@@ -5,18 +5,27 @@ import { useAuth } from '../auth/Auth.jsx';
 import Profile from './Profile.jsx';
 
 const StyledNavbar = styled.div`
-  background-color: palevioletred;
+  display: grid;
+  grid-template-areas:
+    "dashboardLink profileLink logout";
+  grid-template-columns: auto, 30px, 30px;
+  border: 2px solid black
 `
 
-const StyledHomeLink = styled(Link)`
+const DashboardLink = styled(Link)`
+  grid-area: dashboardLink;
   font-size: 20px;
 `
 
-const StyledLink = styled(Link)`
-  color: palevioletred;
-  background: papayawhip;
+const ProfileLink = styled(Link)`
+  grid-area: profileLink;
   border-radius: 4px;
   border: 2px solid black
+`
+
+const LogoutLink = styled(ProfileLink)`
+  grid-area: logout;
+  font-weight: bold
 `
 
 const Navbar = () => {
@@ -28,9 +37,9 @@ const Navbar = () => {
 
   return (
     <StyledNavbar>
-      <StyledHomeLink to='/'>All Dogs Are Good Boys</StyledHomeLink>
-      <StyledLink to={'/user'}>Profile</StyledLink>
-      <StyledLink onClick={userLogout}>Logout</StyledLink>
+      <DashboardLink to='/dashboard'>All Dogs Are Good Boys</DashboardLink>
+      <ProfileLink to={'/user'}>Profile</ProfileLink>
+      <LogoutLink onClick={userLogout}>Logout</LogoutLink>
     </StyledNavbar>
   )
 }
