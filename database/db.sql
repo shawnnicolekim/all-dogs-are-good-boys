@@ -10,7 +10,7 @@ CREATE TABLE users (
   email text UNIQUE NOT NULL,
   password text NOT NULL,
   votes INT NOT NULL DEFAULT 0,
-  image TEXT
+  avatar TEXT
 );
 
 CREATE TABLE posts (

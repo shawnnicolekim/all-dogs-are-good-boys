@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CreatePost from './CreatePost.jsx';
 import PostList from './PostList.jsx';
 
 const Dashboard = () => {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // axios get for all posts
-    // setPosts to received posts
-  });
+    axios.get('/posts')
+      .then((res) => {
+        console.log('res.data: ', res.data);
+        setPosts(res.data);
+      })
+      .catch((err) => {
+        console.error('Could not receive posts, ', err);
+      });
+  }, []);
 
   return (
     <div>

@@ -52,7 +52,7 @@ app.post('/login', (req, res) => {
 app.get('/posts', (req, res) => {
   const queryString = `
     SELECT
-      p.caption, p.id, p.image, p.timestamp, p.votes, u.username
+      p.caption, p.id, p.image, p.timestamp, p.votes, u.username, u.avatar
     FROM
       posts p
     LEFT JOIN

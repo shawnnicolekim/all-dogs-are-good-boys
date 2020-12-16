@@ -33,7 +33,7 @@ const createUser = async () => {
     email: faker.internet.email(),
     password: await bcrypt.hash(faker.internet.password(), 10),
     votes: faker.random.number(250),
-    image: faker.internet.avatar()
+    avatar: faker.internet.avatar()
   }
   return userInfo;
 };

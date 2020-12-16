@@ -1,6 +1,14 @@
 import React from 'react';
 
-const CreatePost = () => {
+const CreatePost = () => (
+  <div>
+    create post form
+  </div>
+);
+
+export default CreatePost;
+
+/*
 
   const handleUsernameChange = (event) => {
     event.preventDefault();
@@ -44,6 +52,4 @@ const CreatePost = () => {
       <Link to='/signup'>Need to create an account? Click here to signup!</Link>
     </div>
   );
-};
-
-export default CreatePost;
+*/
