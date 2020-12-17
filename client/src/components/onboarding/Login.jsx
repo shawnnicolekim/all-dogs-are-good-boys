@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../auth/Auth.jsx';
 import * as Styled from './onboardingStyles.jsx';
 
@@ -50,12 +50,8 @@ const Login = () => {
     <div>
       {incorrectLoginInfo()}
       <Styled.FormWrapper>
-        <input type="text" placeholder="Username" onChange={handleUsernameChange} />
-        <br />
-
-        <input type="text" placeholder="Password" onChange={handlePasswordChange} />
-        <br />
-
+        <Styled.FormInput type="text" placeholder="Username" onChange={handleUsernameChange} />
+        <Styled.FormInput type="text" placeholder="Password" onChange={handlePasswordChange} />
         <Styled.SubmitButton type="submit" value="Login" onClick={onLoginSubmit} />
       </Styled.FormWrapper>
       <Styled.SignupLink to="/signup">Need to create an account? Click here to signup!</Styled.SignupLink>

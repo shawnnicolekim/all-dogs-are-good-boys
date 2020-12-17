@@ -22,7 +22,7 @@ const App = () => {
     if (auth.user) {
       return <Navbar />;
     }
-    return <Styled.TitleButton>All Dogs Are Good Boys</Styled.TitleButton>;
+    return <Styled.TitleButton to="/">All Dogs Are Good Boys</Styled.TitleButton>;
   };
 
   console.log('auth at app: ', auth);

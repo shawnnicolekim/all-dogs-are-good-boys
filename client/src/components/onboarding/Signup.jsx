@@ -57,17 +57,10 @@ const Signup = () => {
     <div>
       {incorrectSignupInfo()}
       <Styled.FormWrapper>
-        <div>All inputs are required.</div>
-
-        <input type="text" placeholder="Username" onChange={handleUsernameChange} />
-        <br />
-
-        <input type="text" placeholder="Email" onChange={handleEmailChange} />
-        <br />
-
-        <input type="text" placeholder="Password" onChange={handlePasswordChange} />
-        <br />
-
+        <div>*All inputs are required.</div>
+        <Styled.FormInput type="text" placeholder="Username" onChange={handleUsernameChange} />
+        <Styled.FormInput type="text" placeholder="Email" onChange={handleEmailChange} />
+        <Styled.FormInput type="text" placeholder="Password" onChange={handlePasswordChange} />
         <Styled.SubmitButton type="submit" value="Signup" onClick={onSignupSubmit} />
       </Styled.FormWrapper>
       <Styled.LoginLink to="/login">Already have an account? Click here to login!</Styled.LoginLink>

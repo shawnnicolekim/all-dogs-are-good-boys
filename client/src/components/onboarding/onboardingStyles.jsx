@@ -1,20 +1,36 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-// FORM WRAPPER - SIGNUP & LOGIN //
-export const FormWrapper = styled.div`
-  border: 2px solid black
-`;
-
 // ERROR MESSAGE - SIGNUP & LOGIN //
 export const ErrorMessage = styled.div`
   background-color: crimson;
   color: mistyrose
 `;
 
+// FORM WRAPPER - SIGNUP & LOGIN //
+export const FormWrapper = styled.div`
+  margin: 20px 5px;
+`;
+
+// FORM INPUT - SIGNUP & LOGIN //
+export const FormInput = styled.input`
+  align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 5px auto;
+  padding: 10px;
+  &: hover {
+    border-color: blue;
+  }
+`;
+
 // SUBMIT BUTTON - SIGNUP & LOGIN //
 export const SubmitButton = styled.input`
-  border: 2px solid black
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
+  padding: 5px
 `;
 
 // LINKS - SIGNUP & LOGIN//
