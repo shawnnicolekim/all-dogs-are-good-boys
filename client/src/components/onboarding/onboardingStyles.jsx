@@ -10,7 +10,7 @@ export const FrontPageWrapper = styled.div`
   transform: translate(-50%, -50%)
 `;
 
-// LINKS - SIGNUP & LOGIN//
+// SIGNUP LINK //
 export const SignupLink = styled(Link)`
   background-color: papayawhip;
   border: 2px solid grey;
@@ -26,6 +26,7 @@ export const SignupLink = styled(Link)`
   }
 `;
 
+// LOGIN LINK //
 export const LoginLink = styled(SignupLink)`
   background-color: peachpuff;
   color: salmon;
@@ -34,7 +35,7 @@ export const LoginLink = styled(SignupLink)`
   }
 `;
 
-// MESSAGE - SIGNUP //
+// SIGNUP MESSAGE (INPUT REQUIRED) //
 export const Message = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,9 +51,8 @@ export const ErrorMessage = styled(Message)`
 `;
 
 // FORM WRAPPER - SIGNUP & LOGIN //
-export const FormWrapper = styled.div`
-  border: 2px solid black;
-  margin: 20px auto;
+export const FormWrapper = styled.form`
+  margin: 50px auto;
   padding: 5px
 `;
 
@@ -60,7 +60,7 @@ export const FormWrapper = styled.div`
 export const FormInput = styled.input`
   display: flex;
   flex-direction: column;
-  margin: 5px auto;
+  margin: 10px auto;
   padding: 10px;
   &: hover {
     border-color: blue;
@@ -72,8 +72,6 @@ export const SubmitButton = styled.input`
   border: 2px solid black;
   display: flex;
   flex-direction: column;
-  margin: 10px auto;
+  margin: 20px auto;
   padding: 5px
 `;
-
-

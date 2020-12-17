@@ -55,13 +55,13 @@ const Signup = () => {
 
   return (
     <div>
-      <Styled.FormWrapper>
+      <Styled.FormWrapper onSubmit={onSignupSubmit}>
         {incorrectSignupInfo()}
         <Styled.Message>*All inputs are required.</Styled.Message>
         <Styled.FormInput type="text" placeholder="Username" onChange={handleUsernameChange} />
         <Styled.FormInput type="text" placeholder="Email" onChange={handleEmailChange} />
         <Styled.FormInput type="password" placeholder="Password" onChange={handlePasswordChange} />
-        <Styled.SubmitButton type="submit" value="Signup" onClick={onSignupSubmit} />
+        <Styled.SubmitButton type="submit" value="Signup" />
       </Styled.FormWrapper>
       <Styled.LoginLink to="/login">Already have an account? Click here to login!</Styled.LoginLink>
     </div>

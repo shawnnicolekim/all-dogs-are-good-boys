@@ -48,11 +48,11 @@ const Login = () => {
 
   return (
     <div>
-      <Styled.FormWrapper>
+      <Styled.FormWrapper onSubmit={onLoginSubmit}>
         {incorrectLoginInfo()}
         <Styled.FormInput type="text" placeholder="Username" onChange={handleUsernameChange} />
         <Styled.FormInput type="password" placeholder="Password" onChange={handlePasswordChange} />
-        <Styled.SubmitButton type="submit" value="Login" onClick={onLoginSubmit} />
+        <Styled.SubmitButton type="submit" value="Login" />
       </Styled.FormWrapper>
       <Styled.SignupLink to="/signup">Need to create an account? Click here to signup!</Styled.SignupLink>
     </div>
