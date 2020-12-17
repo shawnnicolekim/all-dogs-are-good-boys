@@ -23,62 +23,61 @@ const comments = [
   'Love!!',
   'This pupper deserves all the treats.',
   'A pretty doggo!',
-  'Another good boy!'
+  'Another good boy!',
 ];
 
 // users: username, profile picture, and votes
 const createUser = async () => {
-  let userInfo = {
+  const userInfo = {
     username: faker.internet.userName().slice(0, 24),
     email: faker.internet.email(),
     password: await bcrypt.hash(faker.internet.password(), 10),
     votes: faker.random.number(250),
-    avatar: faker.internet.avatar()
-  }
+    avatar: faker.internet.avatar(),
+  };
   return userInfo;
 };
 
 // posts: image, caption, votes, timestamp, and user_id
 const createPost = async () => {
-  let postInfo = {
-    user_id: faker.random.number({min: 1, max: 100}),
+  const postInfo = {
+    user_id: faker.random.number({ min: 1, max: 100 }),
     timestamp: faker.date.past(10),
     image: `https://placedog.net/640/480?random=${Math.floor(Math.random() * 100)}`,
     caption: faker.lorem.paragraph(2),
-    votes: faker.random.number(250)
-  }
+    votes: faker.random.number(250),
+  };
   return postInfo;
-}
+};
 
 // comments_posts: timestamp, user_id, comment_id, post_id
 // comment needs to be a time AFTER a given post was made
 const createCommentOnPost = async () => {
-
-  let commentOnPostInfo = {
+  const commentOnPostInfo = {
     timestamp: null,
-    user_id: faker.random.number({min: 1, max: 100}),
-    comment_id: faker.random.number({min: 1, max: 20}),
-    post_id: faker.random.number({min: 1, max: 100})
-  }
+    user_id: faker.random.number({ min: 1, max: 100 }),
+    comment_id: faker.random.number({ min: 1, max: 20 }),
+    post_id: faker.random.number({ min: 1, max: 100 }),
+  };
 
-  let queryString = `SELECT timestamp FROM posts WHERE id=${commentOnPostInfo['post_id']}`;
+  const queryString = `SELECT timestamp FROM posts WHERE id=${commentOnPostInfo.post_id}`;
 
-  let postTimeStamp = await db.query(queryString);
+  const postTimeStamp = await db.query(queryString);
 
   commentOnPostInfo.timestamp = faker.date.between(postTimeStamp[0].timestamp, new Date());
 
   return commentOnPostInfo;
-}
+};
 
 // favorites: user_id, post_id
 const createFavorite = async () => {
-  let favoriteInfo = {
-    user_id: faker.random.number({min: 1, max: 100}),
-    post_id: faker.random.number({min: 1, max: 100})
-  }
+  const favoriteInfo = {
+    user_id: faker.random.number({ min: 1, max: 100 }),
+    post_id: faker.random.number({ min: 1, max: 100 }),
+  };
 
   return favoriteInfo;
-}
+};
 
 // give any of the functions above to create 100 results
 const createData = async (callback, table) => {
@@ -89,40 +88,40 @@ const createData = async (callback, table) => {
   }
 
   if (table === 'posts' || table === 'comments_posts') {
-    data = data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+    data = data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
   }
 
-  let columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), {table: table});
+  const columns = new pgp.helpers.ColumnSet(Object.keys(data[0]), { table });
 
-  let query = pgp.helpers.insert(data, columns);
+  const query = pgp.helpers.insert(data, columns);
 
   return query;
-}
+};
 
 const seedComments = async () => {
-  let query = 'INSERT INTO comments (text) SELECT * FROM UNNEST($1)';
+  const query = 'INSERT INTO comments (text) SELECT * FROM UNNEST($1)';
   await db.none(query, [comments]);
-}
+};
 
 const seedAll = async () => {
-  let seedFunctions = {
+  const seedFunctions = {
     users: createUser,
     posts: createPost,
     comments_posts: createCommentOnPost,
-    favorites: createFavorite
-  }
+    favorites: createFavorite,
+  };
 
-  for (let table in seedFunctions) {
-    let data = await createData(seedFunctions[table], table)
+  for (const table in seedFunctions) {
+    const data = await createData(seedFunctions[table], table);
     await db.none(data);
   }
-}
+};
 
 seedComments()
   .then(seedAll)
   .then(() => {
     console.log('Completed seeding database.');
   })
-  .catch(err => {
+  .catch((err) => {
     console.error(err);
-  })
+  });
