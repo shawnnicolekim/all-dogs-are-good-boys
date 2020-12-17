@@ -22,9 +22,18 @@ const App = () => {
     if (auth.user) {
       return <Navbar />;
     }
-    return <Styled.TitleButton to="/">All Dogs Are Good Boys</Styled.TitleButton>;
+    return (
+      <Styled.TitleButton to="/">
+        All Dogs
+        <br />
+        Are
+        <br />
+        Good Boys
+      </Styled.TitleButton>
+    );
   };
 
+  // eslint-disable-next-line no-console
   console.log('auth at app: ', auth);
   return (
     <div>

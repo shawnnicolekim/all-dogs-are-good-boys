@@ -12,6 +12,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/signup', async (req, res) => {
+  if (req.body.password.length === 0) {
+    res.status(401).send({ registered: false });
+    return;
+  }
+
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   const queryString = `
@@ -26,8 +31,9 @@ app.post('/signup', async (req, res) => {
       res.status(200).send({ registered: true });
     })
     .catch((err) => {
+      console.log('signup here7?');
       console.error('Could not register this user: ', err);
-      res.status(400).send({ registered: false });
+      res.status(401).send({ registered: false });
     });
 });
 

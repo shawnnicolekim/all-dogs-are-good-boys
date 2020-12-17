@@ -2,11 +2,10 @@ import React from 'react';
 import * as Styled from './onboardingStyles.jsx';
 
 const FrontPage = () => (
-  <div>
-    Frontpage
+  <Styled.FrontPageWrapper>
     <Styled.LoginLink to="/login">Login</Styled.LoginLink>
     <Styled.SignupLink to="/signup">Signup</Styled.SignupLink>
-  </div>
+  </Styled.FrontPageWrapper>
 );
 
 export default FrontPage;

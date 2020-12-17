@@ -19,3 +19,7 @@ export const PostListWrapper = styled(Wrapper)`
 export const PostEntryWrapper = styled(Wrapper)`
   color: green
 `;
+
+// SPOTLIGHT //
+export const Spotlight = styled(Wrapper)`
+`;

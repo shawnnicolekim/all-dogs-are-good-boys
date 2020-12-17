@@ -17,7 +17,7 @@ const Signup = () => {
     if (signupInfo) {
       return (
         <Styled.ErrorMessage>
-          There is already a user with that username. Please select a different username.
+          {username && email && password ? ('There is already a user with that username. Please select a different username.') : ('Please fill out all boxes in order to sign up.')}
         </Styled.ErrorMessage>
       );
     }
@@ -55,12 +55,12 @@ const Signup = () => {
 
   return (
     <div>
-      {incorrectSignupInfo()}
       <Styled.FormWrapper>
-        <div>*All inputs are required.</div>
+        {incorrectSignupInfo()}
+        <Styled.Message>*All inputs are required.</Styled.Message>
         <Styled.FormInput type="text" placeholder="Username" onChange={handleUsernameChange} />
         <Styled.FormInput type="text" placeholder="Email" onChange={handleEmailChange} />
-        <Styled.FormInput type="text" placeholder="Password" onChange={handlePasswordChange} />
+        <Styled.FormInput type="password" placeholder="Password" onChange={handlePasswordChange} />
         <Styled.SubmitButton type="submit" value="Signup" onClick={onSignupSubmit} />
       </Styled.FormWrapper>
       <Styled.LoginLink to="/login">Already have an account? Click here to login!</Styled.LoginLink>
