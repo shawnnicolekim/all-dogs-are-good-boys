@@ -13,4 +13,5 @@ export const TitleButton = styled(Link)`
   flex-direction: column;
   margin: auto;
   padding: 20px;
+  width: fit-content
 `;

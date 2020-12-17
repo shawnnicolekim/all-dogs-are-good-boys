@@ -12,6 +12,7 @@ const Login = () => {
 
   const [loginInfo, setLoginInfo] = useState(false);
 
+  // eslint-disable-next-line consistent-return
   const incorrectLoginInfo = () => {
     if (loginInfo) {
       return (
