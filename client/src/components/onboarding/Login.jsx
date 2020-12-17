@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../auth/Auth.jsx';
+import * as Styled from './onboardingStyles.jsx';
 
 const Login = () => {
   const auth = useAuth();
@@ -14,7 +15,9 @@ const Login = () => {
   const incorrectLoginInfo = () => {
     if (loginInfo) {
       return (
-        <p>You input the wrong username or password. Please try again.</p>
+        <Styled.ErrorMessage>
+          You input the wrong username or password. Please try again.
+        </Styled.ErrorMessage>
       );
     }
   };
@@ -44,21 +47,18 @@ const Login = () => {
   };
 
   return (
-    <div id='login'>
-      <h1>Login</h1>
+    <div>
       {incorrectLoginInfo()}
-      <form onSubmit={onLoginSubmit}>
-        <label for='username'>Username</label>
-        <input type='text' id='username' name='username' onChange={handleUsernameChange}/>
-        <br></br>
+      <Styled.FormWrapper>
+        <input type="text" placeholder="Username" onChange={handleUsernameChange} />
+        <br />
 
-        <label for='password'>Password</label>
-        <input type='text' id='password' name='password' onChange={handlePasswordChange}/>
-        <br></br>
+        <input type="text" placeholder="Password" onChange={handlePasswordChange} />
+        <br />
 
-        <input type='submit' value='Login'/>
-      </form>
-      <Link to='/signup'>Need to create an account? Click here to signup!</Link>
+        <Styled.SubmitButton type="submit" value="Login" onClick={onLoginSubmit} />
+      </Styled.FormWrapper>
+      <Styled.SignupLink to="/signup">Need to create an account? Click here to signup!</Styled.SignupLink>
     </div>
   );
 };

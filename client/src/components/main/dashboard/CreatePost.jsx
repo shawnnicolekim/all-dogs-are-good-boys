@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CreatePost = () => (
+const CreatePost = ({ setPosts }) => (
   <div>
     create post form
   </div>

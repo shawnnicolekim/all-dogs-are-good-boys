@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Styled from './obStyles.jsx';
+import * as Styled from './onboardingStyles.jsx';
 
 const FrontPage = () => (
   <div>

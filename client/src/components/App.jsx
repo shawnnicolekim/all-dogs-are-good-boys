@@ -4,6 +4,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import { useAuth } from '../auth/Auth.jsx';
+import * as Styled from './appStyles.jsx';
 
 import PrivateRoute from '../auth/PrivateRoute.jsx';
 import RestrictedRoute from '../auth/RestrictedRoute.jsx';
@@ -21,7 +22,7 @@ const App = () => {
     if (auth.user) {
       return <Navbar />;
     }
-    return <h1>All Dogs Are Good Boys</h1>;
+    return <Styled.TitleButton>All Dogs Are Good Boys</Styled.TitleButton>;
   };
 
   console.log('auth at app: ', auth);

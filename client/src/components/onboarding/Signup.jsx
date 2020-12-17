@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import * as Styled from './onboardingStyles.jsx';
 import { useAuth } from '../../auth/Auth.jsx';
 
 const Signup = () => {
@@ -15,7 +16,9 @@ const Signup = () => {
   const incorrectSignupInfo = () => {
     if (signupInfo) {
       return (
-        <p>There is already a user with that username. Please select a different username.</p>
+        <Styled.ErrorMessage>
+          There is already a user with that username. Please select a different username.
+        </Styled.ErrorMessage>
       );
     }
   };
@@ -51,26 +54,23 @@ const Signup = () => {
   };
 
   return (
-    <div id='signup'>
-      <h1>Signup</h1>
+    <div>
       {incorrectSignupInfo()}
-      <div>All inputs are required.</div>
-      <form onSubmit={onSignupSubmit}>
-        <label for='username'>Username</label>
-        <input type='text' id='username' name='username' onChange={handleUsernameChange} />
-        <br></br>
+      <Styled.FormWrapper>
+        <div>All inputs are required.</div>
 
-        <label for='email'>Email</label>
-        <input type='text' id='email' name='email' onChange={handleEmailChange} />
-        <br></br>
+        <input type="text" placeholder="Username" onChange={handleUsernameChange} />
+        <br />
 
-        <label for='password'>Password</label>
-        <input type='text' id='password' name='password' onChange={handlePasswordChange} />
-        <br></br>
+        <input type="text" placeholder="Email" onChange={handleEmailChange} />
+        <br />
 
-        <input type='submit' value='Signup' />
-      </form>
-      <Link to='/login'>Already have an account? Go to the login page!</Link>
+        <input type="text" placeholder="Password" onChange={handlePasswordChange} />
+        <br />
+
+        <Styled.SubmitButton type="submit" value="Signup" onClick={onSignupSubmit} />
+      </Styled.FormWrapper>
+      <Styled.LoginLink to="/login">Already have an account? Click here to login!</Styled.LoginLink>
     </div>
   );
 };
